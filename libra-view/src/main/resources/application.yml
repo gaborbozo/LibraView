@@ -1,0 +1,14 @@
+spring:
+  jpa:
+    database: POSTGRESQL
+    show-sql: true
+    hibernate:
+      ddl-auto: create-drop
+  datasource:
+    url: jdbc:postgresql://localhost:5432/libra_view
+    username: libra_admin
+    password: libra_pwd
+    driverClassName: org.postgresql.Driver
+  sql:
+    init:
+      platform: postgres
