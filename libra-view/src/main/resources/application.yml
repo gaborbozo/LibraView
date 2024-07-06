@@ -1,3 +1,10 @@
+##################### Custom config
+libra:
+  modules:
+    hu.bozgab.movie,
+    hu.bozgab.book,
+    hu.bozgab.note
+##################### Spring config
 spring:
   jpa:
     database: POSTGRESQL
