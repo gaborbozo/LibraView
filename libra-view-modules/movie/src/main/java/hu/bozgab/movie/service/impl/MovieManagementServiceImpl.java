@@ -1,6 +1,7 @@
 package hu.bozgab.movie.service.impl;
 
-import hu.bozgab.movie.domain.Movie;
+import hu.bozgab.movie.dto.MovieDTO;
+import hu.bozgab.movie.mapper.MovieMapper;
 import hu.bozgab.movie.repository.MovieRepository;
 import hu.bozgab.movie.service.MovieManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +15,11 @@ public class MovieManagementServiceImpl implements MovieManagementService {
     @Autowired
     MovieRepository movieRepository;
 
+    @Autowired
+    MovieMapper movieMapper;
+
     @Override
-    public List<Movie> findAll() {
-        return movieRepository.findAll();
+    public List<MovieDTO> findAll() {
+        return movieMapper.movieListToMovieDTOList(movieRepository.findAll());
     }
 }

@@ -23,6 +23,8 @@
         <maven.compiler.source>22</maven.compiler.source>
         <maven.compiler.target>22</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <dependency.mapstruct.version>1.5.5.Final</dependency.mapstruct.version>
     </properties>
 
     <dependencyManagement>
@@ -34,6 +36,20 @@
                 <optional>true</optional>
                 <version>1.18.32</version>
             </dependency>
+
+            <!-- https://mvnrepository.com/artifact/org.mapstruct/mapstruct -->
+            <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct</artifactId>
+                <version>${dependency.mapstruct.version}</version>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/org.mapstruct/mapstruct-processor -->
+            <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct-processor</artifactId>
+                <version>${dependency.mapstruct.version}</version>
+            </dependency>
+
 
             <!-- WEB -->
             <dependency>

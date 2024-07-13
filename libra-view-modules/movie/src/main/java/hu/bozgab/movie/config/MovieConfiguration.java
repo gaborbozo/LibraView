@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @EntityScan("hu.bozgab.movie.domain")
 @EnableJpaRepositories(basePackages = {"hu.bozgab.movie.repository"})
-@ComponentScan(basePackages = {"hu.bozgab.movie.controller", "hu.bozgab.movie.service"})
+@ComponentScan(basePackages = {"hu.bozgab.movie.controller", "hu.bozgab.movie.service", "hu.bozgab.movie.mapper"})
 @Configuration
 public class MovieConfiguration {
 }

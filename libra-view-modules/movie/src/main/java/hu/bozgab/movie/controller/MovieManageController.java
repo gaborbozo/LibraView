@@ -1,6 +1,6 @@
 package hu.bozgab.movie.controller;
 
-import hu.bozgab.movie.domain.Movie;
+import hu.bozgab.movie.dto.MovieDTO;
 import hu.bozgab.movie.service.MovieManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +21,7 @@ public class MovieManageController {
     }
 
     @GetMapping("/findAll")
-    public List<Movie> findAll() {
+    public List<MovieDTO> findAll() {
         return movieManagementService.findAll();
     }
 
