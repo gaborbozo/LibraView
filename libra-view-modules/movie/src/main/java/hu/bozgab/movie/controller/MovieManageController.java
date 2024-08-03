@@ -1,5 +1,6 @@
 package hu.bozgab.movie.controller;
 
+import hu.bozgab.movie.config.TMDBProperties;
 import hu.bozgab.movie.dto.GenreDTO;
 import hu.bozgab.movie.dto.MovieDTO;
 import hu.bozgab.movie.service.MovieManagementService;
@@ -20,7 +21,7 @@ public class MovieManageController {
 
 
     @Autowired
-    public MovieManageController(MovieManagementService movieManagementService, MovieTMDBService movieTMDBService) {
+    public MovieManageController(MovieManagementService movieManagementService, MovieTMDBService movieTMDBService, TMDBProperties tmdbProperties) {
         this.movieManagementService = movieManagementService;
         this.movieTMDBService = movieTMDBService;
     }

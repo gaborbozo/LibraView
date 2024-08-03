@@ -17,10 +17,16 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 @Configuration
 public class MovieConfiguration {
 
+    private TMDBProperties tmdbProperties;
+
+    public MovieConfiguration(TMDBProperties tmdbProperties) {
+        this.tmdbProperties = tmdbProperties;
+    }
+
     @Bean
     MovieTMDBJsonPlaceholderService movieTMDBJsonPlaceholderService() {
         RestClient client = RestClient.builder()
-                .baseUrl("https://api.themoviedb.org/3")
+                .baseUrl(tmdbProperties.getUrl())
                 .defaultHeaders(
                         httpHeaders -> {
                             httpHeaders.setContentType(MediaType.APPLICATION_JSON);

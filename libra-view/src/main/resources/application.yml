@@ -4,6 +4,9 @@ libra:
     hu.bozgab.movie,
     hu.bozgab.book,
     hu.bozgab.note
+movie:
+  tmdb:
+    url: https://api.themoviedb.org/3
 ##################### Spring config
 spring:
   jpa:
