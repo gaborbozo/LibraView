@@ -1,13 +1,15 @@
 package hu.bozgab.movie.controller;
 
-import hu.bozgab.movie.config.TMDBProperties;
 import hu.bozgab.movie.dto.GenreDTO;
 import hu.bozgab.movie.dto.MovieDTO;
 import hu.bozgab.movie.service.MovieManagementService;
-import hu.bozgab.movie.service.MovieTMDBService;
+import hu.bozgab.movie.service.TMDBService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -17,27 +19,33 @@ public class MovieManageController {
 
     private MovieManagementService movieManagementService;
 
-    private MovieTMDBService movieTMDBService;
+    private TMDBService TMDBService;
 
 
     @Autowired
-    public MovieManageController(MovieManagementService movieManagementService, MovieTMDBService movieTMDBService, TMDBProperties tmdbProperties) {
+    public MovieManageController(MovieManagementService movieManagementService, TMDBService TMDBService) {
         this.movieManagementService = movieManagementService;
-        this.movieTMDBService = movieTMDBService;
+        this.TMDBService = TMDBService;
     }
 
     @GetMapping("/findAll")
     public ResponseEntity<List<MovieDTO>> findAll() {
-        return ResponseEntity.ok(movieManagementService.findAll());
+        return ResponseEntity.ok(
+                movieManagementService.findAll()
+        );
     }
 
     @GetMapping("/search")
     public ResponseEntity<String> search() {
-        return movieTMDBService.findMovie("Inside out");
+        return ResponseEntity.ok(
+                TMDBService.findMovie("Inside out")
+        );
     }
 
-    @PostMapping("/updateGenre")
-    public ResponseEntity<GenreDTO> updateGenres(@RequestBody List<GenreDTO> genreDTOList) {
-        return ResponseEntity.ok(genreDTOList.get(0));
+    @GetMapping("/availableGenres")
+    public ResponseEntity<List<GenreDTO>> availableGenres(@RequestBody List<GenreDTO> genreDTOList) {
+        return ResponseEntity.ok(
+                movieManagementService.availableGenres()
+        );
     }
 }

@@ -1,4 +1,15 @@
-# Module referencing, loading
+# Architecture
+
+## Name conventions
+
+### Modules
+
+In the _Client_, _Service_, _Controller_, and _Config_ packages, each file should have a more descriptive and meaningful
+name than just a single word.
+
+# Module
+
+## Defining, referencing
 
 Defined with **Maven profiles**.
 
