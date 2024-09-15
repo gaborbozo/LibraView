@@ -7,10 +7,11 @@ import hu.bozgab.movie.repository.GenreRepository;
 import hu.bozgab.movie.repository.MovieRepository;
 import hu.bozgab.movie.service.MovieManagementService;
 import hu.bozgab.movie.service.TMDBService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service
 public class MovieManagementServiceImpl implements MovieManagementService {
@@ -50,6 +51,4 @@ public class MovieManagementServiceImpl implements MovieManagementService {
     public List<GenreDTO> availableGenres() {
         return null;
     }
-
-
 }

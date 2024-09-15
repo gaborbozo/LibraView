@@ -2,9 +2,10 @@ package hu.bozgab.movie.mapper;
 
 import hu.bozgab.movie.domain.Movie;
 import hu.bozgab.movie.dto.MovieDTO;
-import org.mapstruct.Mapper;
 
 import java.util.List;
+
+import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
 public interface MovieMapper {
@@ -16,5 +17,4 @@ public interface MovieMapper {
     List<Movie> movieListToMovieList(List<MovieDTO> movieDTOList);
 
     List<MovieDTO> movieListToMovieDTOList(List<Movie> movieList);
-
 }

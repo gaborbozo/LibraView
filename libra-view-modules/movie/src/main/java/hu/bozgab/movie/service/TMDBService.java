@@ -9,5 +9,4 @@ public interface TMDBService {
     List<GenreDTO> updateGenres();
 
     String findMovie(String searchKey);
-
 }

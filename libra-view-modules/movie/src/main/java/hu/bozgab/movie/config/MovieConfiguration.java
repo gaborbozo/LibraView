@@ -1,6 +1,7 @@
 package hu.bozgab.movie.config;
 
 import hu.bozgab.movie.client.TMDBJsonPlaceholderService;
+
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -16,7 +17,7 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 @org.springframework.context.annotation.Configuration
 public class MovieConfiguration {
 
-    private TMDBProperties tmdbProperties;
+    private final TMDBProperties tmdbProperties;
 
     public MovieConfiguration(TMDBProperties tmdbProperties) {
         this.tmdbProperties = tmdbProperties;
@@ -35,7 +36,7 @@ public class MovieConfiguration {
         HttpServiceProxyFactory factory = HttpServiceProxyFactory
                 .builderFor(RestClientAdapter.create(client))
                 .build();
+
         return factory.createClient(TMDBJsonPlaceholderService.class);
     }
-
 }

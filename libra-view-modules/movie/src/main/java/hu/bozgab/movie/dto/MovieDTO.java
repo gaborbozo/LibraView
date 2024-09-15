@@ -6,7 +6,6 @@ import lombok.Data;
 public class MovieDTO {
 
     private Long id;
-    
-    private String title;
 
+    private String title;
 }

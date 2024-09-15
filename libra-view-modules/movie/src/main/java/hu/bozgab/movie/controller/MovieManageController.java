@@ -4,25 +4,23 @@ import hu.bozgab.movie.dto.GenreDTO;
 import hu.bozgab.movie.dto.MovieDTO;
 import hu.bozgab.movie.service.MovieManagementService;
 import hu.bozgab.movie.service.TMDBService;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 @RequestMapping("/movie")
 @RestController
 public class MovieManageController {
 
-    private MovieManagementService movieManagementService;
+    private final MovieManagementService movieManagementService;
 
-    private TMDBService TMDBService;
+    private final TMDBService TMDBService;
 
-
-    @Autowired
     public MovieManageController(MovieManagementService movieManagementService, TMDBService TMDBService) {
         this.movieManagementService = movieManagementService;
         this.TMDBService = TMDBService;
