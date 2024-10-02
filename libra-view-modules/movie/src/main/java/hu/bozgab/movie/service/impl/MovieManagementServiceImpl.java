@@ -13,6 +13,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
 @Service
 public class MovieManagementServiceImpl implements MovieManagementService {
 
@@ -51,4 +52,5 @@ public class MovieManagementServiceImpl implements MovieManagementService {
     public List<GenreDTO> availableGenres() {
         return null;
     }
+
 }

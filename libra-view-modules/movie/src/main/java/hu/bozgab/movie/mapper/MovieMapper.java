@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.mapstruct.Mapper;
 
+
 @Mapper(componentModel = "spring")
 public interface MovieMapper {
 
@@ -17,4 +18,5 @@ public interface MovieMapper {
     List<Movie> movieListToMovieList(List<MovieDTO> movieDTOList);
 
     List<MovieDTO> movieListToMovieDTOList(List<Movie> movieList);
+
 }

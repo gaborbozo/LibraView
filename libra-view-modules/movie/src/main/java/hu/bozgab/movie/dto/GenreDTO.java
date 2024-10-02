@@ -2,6 +2,7 @@ package hu.bozgab.movie.dto;
 
 import lombok.Data;
 
+
 @Data
 public class GenreDTO {
 
@@ -10,4 +11,5 @@ public class GenreDTO {
     private Long tMDBId;
 
     private String name;
+
 }

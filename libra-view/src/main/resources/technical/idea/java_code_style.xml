@@ -1,21 +1,34 @@
 <code_scheme name="Default" version="173">
-  <JavaCodeStyleSettings>
-    <option name="CLASS_COUNT_TO_USE_IMPORT_ON_DEMAND" value="9999" />
-    <option name="NAMES_COUNT_TO_USE_IMPORT_ON_DEMAND" value="9999" />
-    <option name="IMPORT_LAYOUT_TABLE">
-      <value>
-        <package name="hu.bozgab" withSubpackages="true" static="false" />
-        <emptyLine />
-        <package name="javax" withSubpackages="true" static="false" />
-        <emptyLine />
-        <package name="java" withSubpackages="true" static="false" />
-        <emptyLine />
-        <package name="" withSubpackages="true" static="false" />
-        <emptyLine />
-        <package name="" withSubpackages="true" static="true" />
-        <emptyLine />
-        <package name="static hu.bozgab" withSubpackages="true" static="true" />
-      </value>
-    </option>
-  </JavaCodeStyleSettings>
+    <JavaCodeStyleSettings>
+        <option name="CLASS_COUNT_TO_USE_IMPORT_ON_DEMAND" value="9999"/>
+        <option name="NAMES_COUNT_TO_USE_IMPORT_ON_DEMAND" value="9999"/>
+        <option name="IMPORT_LAYOUT_TABLE">
+            <value>
+                <package name="hu.bozgab" withSubpackages="true" static="false"/>
+                <emptyLine/>
+                <package name="javax" withSubpackages="true" static="false"/>
+                <emptyLine/>
+                <package name="java" withSubpackages="true" static="false"/>
+                <emptyLine/>
+                <package name="" withSubpackages="true" static="false"/>
+                <emptyLine/>
+                <package name="" withSubpackages="true" static="true"/>
+                <emptyLine/>
+                <package name="static hu.bozgab" withSubpackages="true" static="true"/>
+            </value>
+        </option>
+    </JavaCodeStyleSettings>
+    <codeStyleSettings language="JAVA">
+        <option name="BLANK_LINES_AFTER_IMPORTS" value="2"/>
+        <option name="BLANK_LINES_AFTER_CLASS_HEADER" value="1"/>
+        <option name="BLANK_LINES_BEFORE_CLASS_END" value="1"/>
+        <option name="SPACE_WITHIN_ARRAY_INITIALIZER_BRACES" value="true"/>
+        <option name="SPACE_BEFORE_IF_PARENTHESES" value="false"/>
+        <option name="SPACE_BEFORE_WHILE_PARENTHESES" value="false"/>
+        <option name="SPACE_BEFORE_FOR_PARENTHESES" value="false"/>
+        <option name="SPACE_BEFORE_TRY_PARENTHESES" value="false"/>
+        <option name="SPACE_BEFORE_CATCH_PARENTHESES" value="false"/>
+        <option name="SPACE_BEFORE_SWITCH_PARENTHESES" value="false"/>
+        <option name="SPACE_BEFORE_SYNCHRONIZED_PARENTHESES" value="false"/>
+    </codeStyleSettings>
 </code_scheme>

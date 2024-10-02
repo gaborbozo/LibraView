@@ -6,10 +6,12 @@ import hu.bozgab.movie.dto.GenreDTO;
 import hu.bozgab.movie.mapper.GenreMapper;
 import hu.bozgab.movie.repository.GenreRepository;
 import hu.bozgab.movie.service.TMDBService;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 
 @Service
 public class TMDBServiceImpl implements TMDBService {
@@ -57,4 +59,5 @@ public class TMDBServiceImpl implements TMDBService {
                 searchKey, false, "en-US", 1
         );
     }
+
 }
