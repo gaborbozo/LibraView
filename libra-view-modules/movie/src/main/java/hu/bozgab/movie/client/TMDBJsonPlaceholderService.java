@@ -1,8 +1,6 @@
 package hu.bozgab.movie.client;
 
-import hu.bozgab.movie.dto.helper.TMDBGenreDTO;
-
-import java.util.List;
+import hu.bozgab.movie.dto.integration.TMDBFindGenresResponse;
 
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.service.annotation.GetExchange;
@@ -11,13 +9,12 @@ import org.springframework.web.service.annotation.GetExchange;
 public interface TMDBJsonPlaceholderService {
 
     @GetExchange("/genre/movie/list?language=en")
-    List<TMDBGenreDTO> findGenres();
+    TMDBFindGenresResponse findGenres();
 
-    @GetExchange("/search/movie?api_key={apiKey}&query={query}&include_adult={includeAdult}&language={language}&page={page}")
-    String findMovie(@PathVariable String apiKey,
-                     @PathVariable String query,
-                     @PathVariable boolean includeAdult,
-                     @PathVariable String language,
-                     @PathVariable int page);
+    @GetExchange("/search/movie?query={query}&include_adult={includeAdult}&language={language}&page={page}")
+    String searchMovies(@PathVariable String query,
+                        @PathVariable boolean includeAdult,
+                        @PathVariable String language,
+                        @PathVariable int page);
 
 }

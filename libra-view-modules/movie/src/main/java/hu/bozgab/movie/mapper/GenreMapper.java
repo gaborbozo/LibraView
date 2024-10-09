@@ -2,7 +2,7 @@ package hu.bozgab.movie.mapper;
 
 import hu.bozgab.movie.domain.Genre;
 import hu.bozgab.movie.dto.GenreDTO;
-import hu.bozgab.movie.dto.helper.TMDBGenreDTO;
+import hu.bozgab.movie.dto.integration.TMDBGenreDTO;
 
 import java.util.List;
 
@@ -11,20 +11,28 @@ import org.mapstruct.Mapping;
 
 
 @Mapper(componentModel = "spring")
-public interface GenreMapper {
+public abstract class GenreMapper {
 
     @Mapping(target = "TMDBId", source = "tMDBGenreDTO.id")
     @Mapping(target = "id", ignore = true)
-    GenreDTO tMDBGenreDTOtoGenreDTO(TMDBGenreDTO tMDBGenreDTO);
+    public abstract Genre fromTMDBGenreToGenre(TMDBGenreDTO tMDBGenreDTO);
 
-    List<GenreDTO> tMDBGenreDTOListtoGenreDTOList(List<TMDBGenreDTO> tMDBGenreDTOList);
+    public abstract List<Genre> fromTMDBGenreToGenre(List<TMDBGenreDTO> tMDBGenreDTOList);
 
-    Genre genreDTOtoGenre(GenreDTO genreDTO);
+    @Mapping(target = "TMDBId", source = "tMDBGenreDTO.id")
+    @Mapping(target = "id", ignore = true)
+    public abstract GenreDTO fromTMDBGenreToGenreDTO(TMDBGenreDTO tMDBGenreDTO);
 
-    GenreDTO genretoGenreDTO(Genre genre);
+    public abstract List<GenreDTO> fromTMDBGenreToGenreDTO(List<TMDBGenreDTO> tMDBGenreDTOList);
 
-    List<Genre> genreDTOListToGenreList(List<GenreDTO> genreDTOList);
 
-    List<GenreDTO> genreListToGenreDTOList(List<Genre> genreList);
+    public abstract Genre fromGenreDTOToGenre(GenreDTO genreDTO);
+
+    public abstract List<Genre> fromGenreDTOToGenre(List<GenreDTO> genreDTOList);
+
+
+    public abstract GenreDTO fromGenreToGenreDTO(Genre genre);
+
+    public abstract List<GenreDTO> fromGenreToGenreDTO(List<Genre> genreList);
 
 }

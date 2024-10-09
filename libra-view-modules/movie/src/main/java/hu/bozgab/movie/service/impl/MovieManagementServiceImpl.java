@@ -1,56 +1,47 @@
 package hu.bozgab.movie.service.impl;
 
+import hu.bozgab.movie.domain.Genre;
 import hu.bozgab.movie.dto.GenreDTO;
-import hu.bozgab.movie.dto.MovieDTO;
-import hu.bozgab.movie.mapper.MovieMapper;
+import hu.bozgab.movie.dto.integration.TMDBGenreDTO;
+import hu.bozgab.movie.mapper.GenreMapper;
 import hu.bozgab.movie.repository.GenreRepository;
-import hu.bozgab.movie.repository.MovieRepository;
 import hu.bozgab.movie.service.MovieManagementService;
 import hu.bozgab.movie.service.TMDBService;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 
+@RequiredArgsConstructor
 @Service
 public class MovieManagementServiceImpl implements MovieManagementService {
 
-    private TMDBService tmdbService;
+    private final TMDBService tmdbService;
 
-    private MovieRepository movieRepository;
+    private final GenreRepository genreRepository;
 
-    private GenreRepository genreRepository;
+    private final GenreMapper genreMapper;
 
-    private MovieMapper movieMapper;
-
-    //region Injecting beans
-    @Autowired
-    public void setServices(TMDBService tMDBService) {
-        this.tmdbService = tMDBService;
-    }
-
-    @Autowired
-    public void setRepositories(MovieRepository movieRepository, GenreRepository genreRepository) {
-        this.movieRepository = movieRepository;
-        this.genreRepository = genreRepository;
-    }
-    //endregion
-
-    @Autowired
-    public void setMappers(MovieMapper movieMapper) {
-        this.movieMapper = movieMapper;
-    }
 
     @Override
-    public List<MovieDTO> findAll() {
-        return movieMapper.movieListToMovieDTOList(movieRepository.findAll());
+    public List<GenreDTO> updateGenres() {
+        List<TMDBGenreDTO> tMDBGenres = tmdbService.findGenres();
+        List<Long> persistedTMDBIds = genreRepository.findAllTMDBIds();
+
+        List<Genre> genreList = tMDBGenres.stream()
+                .filter(g -> !persistedTMDBIds.contains(g.getId()))
+                .map(genreMapper::fromTMDBGenreToGenre)
+                .toList();
+        genreRepository.saveAll(genreList);
+
+        return genreMapper.fromGenreToGenreDTO(genreList);
     }
 
     @Override
     public List<GenreDTO> availableGenres() {
-        return null;
+        return genreMapper.fromGenreToGenreDTO(genreRepository.findAll());
     }
 
 }

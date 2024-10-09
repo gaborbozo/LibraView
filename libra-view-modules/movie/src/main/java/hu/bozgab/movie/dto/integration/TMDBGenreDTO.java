@@ -1,4 +1,4 @@
-package hu.bozgab.movie.dto.helper;
+package hu.bozgab.movie.dto.integration;
 
 import lombok.Data;
 

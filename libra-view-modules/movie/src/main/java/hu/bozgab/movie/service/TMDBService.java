@@ -1,14 +1,15 @@
 package hu.bozgab.movie.service;
 
-import hu.bozgab.movie.dto.GenreDTO;
+import hu.bozgab.movie.dto.integration.TMDBGenreDTO;
+import hu.bozgab.movie.dto.integration.TMDBSearchMovieRequest;
 
 import java.util.List;
 
 
 public interface TMDBService {
 
-    List<GenreDTO> updateGenres();
+    List<TMDBGenreDTO> findGenres();
 
-    String findMovie(String searchKey);
+    String searchMovie(TMDBSearchMovieRequest request);
 
 }

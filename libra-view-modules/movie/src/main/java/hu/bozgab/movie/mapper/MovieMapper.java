@@ -9,14 +9,15 @@ import org.mapstruct.Mapper;
 
 
 @Mapper(componentModel = "spring")
-public interface MovieMapper {
+public abstract class MovieMapper {
 
-    Movie movieDTOToMovie(MovieDTO movieDTO);
+    public abstract Movie fromMovieDTOToMovie(MovieDTO movieDTO);
 
-    MovieDTO movieToMovieDTO(Movie movie);
+    public abstract List<Movie> fromMovieDTOToMovie(List<MovieDTO> movieDTOList);
 
-    List<Movie> movieListToMovieList(List<MovieDTO> movieDTOList);
 
-    List<MovieDTO> movieListToMovieDTOList(List<Movie> movieList);
+    public abstract MovieDTO fromMovieToMovieDTO(Movie movie);
+
+    public abstract List<MovieDTO> fromMovieToMovieDTO(List<Movie> movieList);
 
 }
