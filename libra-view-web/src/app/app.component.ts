@@ -1,6 +1,6 @@
 import { Component } from '@angular/core'
 import { RouterModule, RouterOutlet } from '@angular/router'
-import { LibraCommonModule } from './common/libra-common.module'
+import { LibraCommonModule } from './shared/common/libra-common.module'
 import { SharedModule } from './shared/shared.module'
 
 @Component({
