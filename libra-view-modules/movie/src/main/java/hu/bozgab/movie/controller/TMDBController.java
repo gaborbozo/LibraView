@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RequiredArgsConstructor
-@RequestMapping("/tmdb")
+@RequestMapping("/movie_module/tmdb")
 @RestController
 public class TMDBController {
 
