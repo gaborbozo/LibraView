@@ -1,7 +1,7 @@
 package hu.bozgab.movie.controller;
 
 import hu.bozgab.movie.dto.GenreDTO;
-import hu.bozgab.movie.service.MovieManagementService;
+import hu.bozgab.movie.service.CinematicService;
 
 import java.util.List;
 
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class MovieManageController {
 
-    private final MovieManagementService movieManagementService;
+    private final CinematicService movieManagementService;
 
 
     @GetMapping("/updateGenres")

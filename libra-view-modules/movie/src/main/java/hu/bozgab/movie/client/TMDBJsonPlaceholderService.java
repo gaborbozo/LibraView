@@ -9,7 +9,10 @@ import org.springframework.web.service.annotation.GetExchange;
 public interface TMDBJsonPlaceholderService {
 
     @GetExchange("/genre/movie/list?language=en")
-    TMDBFindGenresResponse findGenres();
+    TMDBFindGenresResponse findMovieGenres();
+
+    @GetExchange("/genre/tv/list?language=en")
+    TMDBFindGenresResponse findSeriesGenres();
 
     @GetExchange("/search/movie?query={query}&include_adult={includeAdult}&language={language}&page={page}")
     String searchMovies(@PathVariable String query,

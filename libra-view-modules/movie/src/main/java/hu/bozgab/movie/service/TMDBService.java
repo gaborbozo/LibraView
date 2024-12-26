@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface TMDBService {
 
-    List<TMDBGenreDTO> findGenres();
+    List<TMDBGenreDTO> getGenres();
 
     String searchMovie(TMDBSearchMovieRequest request);
 

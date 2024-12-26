@@ -4,8 +4,9 @@ import hu.bozgab.movie.domain.Genre;
 import hu.bozgab.movie.dto.GenreDTO;
 import hu.bozgab.movie.dto.integration.TMDBGenreDTO;
 import hu.bozgab.movie.mapper.GenreMapper;
+import hu.bozgab.movie.mapper.TMDBGenreMapper;
 import hu.bozgab.movie.repository.GenreRepository;
-import hu.bozgab.movie.service.MovieManagementService;
+import hu.bozgab.movie.service.CinematicService;
 import hu.bozgab.movie.service.TMDBService;
 
 import java.util.List;
@@ -16,32 +17,29 @@ import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
-public class MovieManagementServiceImpl implements MovieManagementService {
+public class CinematicServiceImpl implements CinematicService {
 
     private final TMDBService tmdbService;
 
     private final GenreRepository genreRepository;
 
     private final GenreMapper genreMapper;
-
+    private final TMDBGenreMapper tmdbGenreMapper;
 
     @Override
     public List<GenreDTO> updateGenres() {
-        List<TMDBGenreDTO> tMDBGenres = tmdbService.findGenres();
-        List<Long> persistedTMDBIds = genreRepository.findAllTMDBIds();
+        List<TMDBGenreDTO> tmdbGenreDTOS = tmdbService.getGenres();
+        List<Genre> genreEntities = genreRepository.findAll();
 
-        List<Genre> genreList = tMDBGenres.stream()
-                .filter(g -> !persistedTMDBIds.contains(g.getId()))
-                .map(genreMapper::fromTMDBGenreToGenre)
-                .toList();
-        genreRepository.saveAll(genreList);
+        tmdbGenreMapper.toGenreEntitiesForPersist(genreEntities, tmdbGenreDTOS);
+        genreEntities = genreRepository.saveAll(genreEntities);
 
-        return genreMapper.fromGenreToGenreDTO(genreList);
+        return genreMapper.toGenreDTOS(genreEntities);
     }
 
     @Override
     public List<GenreDTO> availableGenres() {
-        return genreMapper.fromGenreToGenreDTO(genreRepository.findAll());
+        return genreMapper.toGenreDTOS(genreRepository.findAll());
     }
 
 }
