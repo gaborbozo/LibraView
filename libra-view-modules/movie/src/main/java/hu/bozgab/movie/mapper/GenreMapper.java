@@ -14,6 +14,10 @@ import org.mapstruct.MappingTarget;
 @Mapper(componentModel = "spring")
 public abstract class GenreMapper {
 
+    /*
+        DTO conversions
+     */
+
     @Mapping(target = "id", ignore = true)
     public abstract Genre toGenreEntityForPersist(@MappingTarget Genre genreEntity, GenreDTO genreDTO);
 

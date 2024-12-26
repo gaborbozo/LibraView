@@ -11,7 +11,7 @@ import lombok.ToString;
 @EqualsAndHashCode(callSuper = false, exclude = {})
 @ToString(callSuper = true, exclude = {})
 @Entity
-@DiscriminatorValue("MOVIE")
-public class Movie extends Cinematic {
+@DiscriminatorValue("SERIES")
+public class Series extends Cinematic {
 
 }

@@ -14,7 +14,11 @@ import org.mapstruct.MappingTarget;
 @Mapper(componentModel = "spring")
 public abstract class TMDBGenreMapper {
 
-    @Mapping(target = "TMDBId", source = "tmdbGenreDTO.id")
+    /*
+        Entity conversions
+     */
+
+    @Mapping(target = "tmdbId", source = "tmdbGenreDTO.id")
     @Mapping(target = "id", ignore = true)
     public abstract Genre toGenreEntityForPersist(@MappingTarget Genre genreEntity, TMDBGenreDTO tmdbGenreDTO);
 
