@@ -36,6 +36,11 @@
         <maven.compiler.release>${java.version}</maven.compiler.release>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!-- Keeping this version for postgres version 16 (bug) -->
+        <!-- https://github.com/flyway/flyway/issues/3807 -->
+        <flyway.version>10.0.1</flyway.version>
+        <flyway-config-path>src/main/resources/application.properties</flyway-config-path>
     </properties>
 
     <dependencies>
@@ -72,6 +77,19 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.flywaydb/flyway-core -->
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+            <!-- Not necessary but keep it here -->
+            <version>${flyway.version}</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.flywaydb/flyway-database-postgresql -->
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-database-postgresql</artifactId>
+        </dependency>
+
 
         <!-- TEST -->
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-test -->
@@ -84,6 +102,25 @@
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-maven-plugin</artifactId>
+                <!-- Not necessary but keep it here -->
+                <version>${flyway.version}</version>
+                <configuration>
+                    <configFiles>
+                        <configFile>${flyway-config-path}</configFile>
+                    </configFiles>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>migrate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
@@ -101,7 +138,7 @@
 
     <profiles>
         <profile>
-            <id>Movie module</id>
+            <id>movieModule</id>
             <dependencies>
                 <dependency>
                     <groupId>hu.bozgab</groupId>
@@ -109,6 +146,32 @@
                     <version>0.0.1-SNAPSHOT</version>
                 </dependency>
             </dependencies>
+        </profile>
+        <profile>
+            <id>clearMigration</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.flywaydb</groupId>
+                        <artifactId>flyway-maven-plugin</artifactId>
+                        <!-- Not necessary but keep it here -->
+                        <version>${flyway.version}</version>
+                        <configuration>
+                            <configFiles>
+                                <configFile>${flyway-config-path}</configFile>
+                            </configFiles>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <phase>clean</phase>
+                                <goals>
+                                    <goal>clean</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
         </profile>
     </profiles>
 </project>

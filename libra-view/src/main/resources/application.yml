@@ -9,6 +9,8 @@ movie:
     url: https://api.themoviedb.org/3
 ##################### Spring config
 spring:
+  application:
+    name: libra-view
   jpa:
     database: POSTGRESQL
     show-sql: true
