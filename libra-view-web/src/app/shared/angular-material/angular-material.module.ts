@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core'
-import { FormsModule } from '@angular/forms'
+import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { MatAutocompleteModule } from '@angular/material/autocomplete'
 import { MatButtonModule } from '@angular/material/button'
 import { MatButtonToggleModule } from '@angular/material/button-toggle'
@@ -70,6 +70,7 @@ import { MatTreeModule } from '@angular/material/tree'
     MatTooltipModule,
     MatTreeModule,
     FormsModule,
+    ReactiveFormsModule,
   ],
 })
 export class AngularMaterialModule {}

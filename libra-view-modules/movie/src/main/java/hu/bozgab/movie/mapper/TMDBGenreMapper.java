@@ -1,7 +1,7 @@
 package hu.bozgab.movie.mapper;
 
 import hu.bozgab.movie.domain.Genre;
-import hu.bozgab.movie.dto.integration.TMDBGenreDTO;
+import hu.bozgab.movie.dto.integration.genres.TMDBGenreDTO;
 
 import java.util.List;
 import java.util.stream.Collectors;

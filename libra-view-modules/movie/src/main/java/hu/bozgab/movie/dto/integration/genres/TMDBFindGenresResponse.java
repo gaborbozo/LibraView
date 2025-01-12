@@ -1,4 +1,4 @@
-package hu.bozgab.movie.dto.integration;
+package hu.bozgab.movie.dto.integration.genres;
 
 import java.util.ArrayList;
 import java.util.List;

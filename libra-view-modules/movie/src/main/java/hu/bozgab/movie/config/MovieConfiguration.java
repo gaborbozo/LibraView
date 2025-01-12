@@ -56,6 +56,10 @@ public class MovieConfiguration {
                     }
 
                     String escapedQuery = uri.getRawQuery();
+                    // escapedQuery is null when no query parameters are used
+                    if(escapedQuery == null) {
+                        escapedQuery = "";
+                    }
                     escapedQuery += (escapedQuery.contains("?") ? "?api_key=" : "&api_key=") + apiKey;
                     return UriComponentsBuilder.fromUri(uri)
                             .replaceQuery(escapedQuery)

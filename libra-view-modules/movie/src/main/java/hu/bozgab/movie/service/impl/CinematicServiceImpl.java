@@ -2,7 +2,7 @@ package hu.bozgab.movie.service.impl;
 
 import hu.bozgab.movie.domain.Genre;
 import hu.bozgab.movie.dto.GenreDTO;
-import hu.bozgab.movie.dto.integration.TMDBGenreDTO;
+import hu.bozgab.movie.dto.integration.genres.TMDBGenreDTO;
 import hu.bozgab.movie.mapper.GenreMapper;
 import hu.bozgab.movie.mapper.TMDBGenreMapper;
 import hu.bozgab.movie.repository.GenreRepository;

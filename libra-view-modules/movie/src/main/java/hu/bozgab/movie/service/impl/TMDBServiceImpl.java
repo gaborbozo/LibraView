@@ -1,8 +1,10 @@
 package hu.bozgab.movie.service.impl;
 
 import hu.bozgab.movie.client.TMDBJsonPlaceholderService;
-import hu.bozgab.movie.dto.integration.TMDBGenreDTO;
-import hu.bozgab.movie.dto.integration.TMDBSearchMovieRequest;
+import hu.bozgab.movie.dto.integration.configuration.TMDBDetailsDTO;
+import hu.bozgab.movie.dto.integration.genres.TMDBGenreDTO;
+import hu.bozgab.movie.dto.integration.movies.TMDBSearchMovieRequest;
+import hu.bozgab.movie.dto.integration.movies.TMDBSearchMovieResponse;
 import hu.bozgab.movie.service.TMDBService;
 
 import java.util.ArrayList;
@@ -21,6 +23,18 @@ public class TMDBServiceImpl implements TMDBService {
 
     private final TMDBJsonPlaceholderService tmdbJsonPlaceholderService;
 
+    /*
+        Configurations
+     */
+
+    @Override
+    public TMDBDetailsDTO getConfiguration() {
+        return tmdbJsonPlaceholderService.getConfiguration();
+    }
+
+    /*
+        Genres
+     */
 
     @Override
     public List<TMDBGenreDTO> getGenres() {
@@ -34,8 +48,12 @@ public class TMDBServiceImpl implements TMDBService {
                 .values());
     }
 
+    /*
+        Movies
+     */
+
     @Override
-    public String searchMovie(TMDBSearchMovieRequest request) {
+    public TMDBSearchMovieResponse searchMovie(TMDBSearchMovieRequest request) {
         return tmdbJsonPlaceholderService.searchMovies(
                 request.getQuery(), request.getIncludeAdult(), request.getLanguage(), request.getPage()
         );

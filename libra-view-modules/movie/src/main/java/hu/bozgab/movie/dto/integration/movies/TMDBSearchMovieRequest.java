@@ -1,4 +1,4 @@
-package hu.bozgab.movie.dto.integration;
+package hu.bozgab.movie.dto.integration.movies;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
