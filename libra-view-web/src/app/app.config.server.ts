@@ -20,9 +20,10 @@ export const routes: Routes = [
     title: 'LibraView',
   },
   {
-    path: 'movie',
-    loadChildren: () => import('./features/movie/movie.module').then((m) => m.MovieModule),
-    title: 'Movie',
+    path: 'cinematic',
+    loadChildren: () =>
+      import('./features/cinematic/cinematic.module').then((m) => m.CinematicModule),
+    title: 'Cinematic',
   },
   {
     path: '**',

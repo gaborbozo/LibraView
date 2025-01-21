@@ -1,0 +1,29 @@
+<mat-card class="container" appearance="outlined">
+  <img mat-card-image src="{{ imageBaseUrl + 'original/' + item.backdrop_path }}" />
+  <mat-card-header>
+    <mat-card-subtitle class="mb-3">
+      <span> {{ item.vote_average }} <mat-icon class="align-sub">star_border</mat-icon> </span>
+      <span class="float-end"> ({{ item.vote_count }}) </span>
+    </mat-card-subtitle>
+    <mat-card-title>
+      <span class="text-ellipsis-2">
+        {{ item.title }}
+      </span>
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-actions>
+    <mat-chip-set>
+      <mat-chip *ngFor="let genre of item.genre_ids">
+        {{ genre }}
+      </mat-chip>
+    </mat-chip-set>
+  </mat-card-actions>
+  <mat-card-actions class="mx-1">
+    <button mat-icon-button (click)="addMovieItem(item.id)">
+      <mat-icon>add</mat-icon>
+    </button>
+    <button mat-icon-button class="ms-auto">
+      <mat-icon>info</mat-icon>
+    </button>
+  </mat-card-actions>
+</mat-card>

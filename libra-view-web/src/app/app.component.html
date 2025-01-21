@@ -6,10 +6,12 @@
 </mat-toolbar>
 <mat-drawer-container [hasBackdrop]="true">
   <mat-drawer #drawer [mode]="'over'">
-    <h5 [routerLink]="['/movie']">Movies</h5>
-    <button mat-raised-button [routerLink]="['/movie/search']" [toggleDrawer]="drawer">Search</button>
+    <h5 [routerLink]="['/cinematic']">Cinematics</h5>
+    <button mat-raised-button [routerLink]="['/cinematic/search']" [toggleDrawer]="drawer">
+      Search
+    </button>
   </mat-drawer>
   <mat-drawer-content class="libra-view-main-content">
-    <router-outlet/>
+    <router-outlet />
   </mat-drawer-content>
 </mat-drawer-container>

@@ -1,10 +1,10 @@
 ##################### Custom config
 libra:
   modules:
-    hu.bozgab.movie,
+    hu.bozgab.cinematic,
     hu.bozgab.book,
     hu.bozgab.note
-movie:
+cinematic:
   tmdb:
     url: https://api.themoviedb.org/3
 ##################### Spring config

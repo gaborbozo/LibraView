@@ -1,0 +1,11 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div>
+    <mat-form-field>
+      <mat-label>Cinematic name</mat-label>
+      <input matInput placeholder="name" formControlName="name" />
+    </mat-form-field>
+  </div>
+</form>
+<div class="cinematic-container">
+  <app-cinematic-card *ngFor="let item of items" [item]="item"></app-cinematic-card>
+</div>

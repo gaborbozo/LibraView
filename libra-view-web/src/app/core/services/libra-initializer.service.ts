@@ -1,19 +1,19 @@
 import { Injectable } from '@angular/core'
 import { Observable, of, tap } from 'rxjs'
-import { MovieClientServiceService } from '../../shared/client-service/movie-client.service'
-import { TMDBDetailsDTO } from '../../shared/data-model/movie/integration/configuration/tmdb-details.dto'
+import { CinematicClientService } from '../../shared/client-service/cinematic-client.service'
+import { TMDBGetDetailsResponse } from '../../shared/data-model/cinematic/integration/configuration/tmdb-get-details.response'
 
 @Injectable({ providedIn: 'root' })
 export class LibraInitializer {
-  private configurationDetails?: TMDBDetailsDTO
+  private configurationDetails?: TMDBGetDetailsResponse
 
-  constructor(private movieClientServiceService: MovieClientServiceService) {}
+  constructor(private cinematicClient: CinematicClientService) {}
 
-  getConfigurationDetails(): Observable<TMDBDetailsDTO> {
+  getConfigurationDetails(): Observable<TMDBGetDetailsResponse> {
     if (this.configurationDetails) {
       return of(this.configurationDetails)
     } else {
-      return this.movieClientServiceService
+      return this.cinematicClient
         .configuration()
         .pipe(tap((cD) => (this.configurationDetails = cD)))
     }

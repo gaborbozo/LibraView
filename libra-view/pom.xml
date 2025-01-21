@@ -138,11 +138,11 @@
 
     <profiles>
         <profile>
-            <id>movieModule</id>
+            <id>cinematicModule</id>
             <dependencies>
                 <dependency>
                     <groupId>hu.bozgab</groupId>
-                    <artifactId>movie</artifactId>
+                    <artifactId>cinematic</artifactId>
                     <version>0.0.1-SNAPSHOT</version>
                 </dependency>
             </dependencies>

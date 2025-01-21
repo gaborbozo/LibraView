@@ -11,7 +11,7 @@ import org.springframework.util.ClassUtils;
 
 
 @Log4j2
-@ComponentScan(basePackages = { "hu.bozgab.movie.config" })
+@ComponentScan(basePackages = { "hu.bozgab.cinematic.config" })
 @ComponentScan(basePackages = { "hu.bozgab.book.config" })
 @ComponentScan(basePackages = { "hu.bozgab.note.config" })
 @Configuration
