@@ -1,12 +1,18 @@
 import { HttpClient, HttpParams } from '@angular/common/http'
 import { Injectable } from '@angular/core'
-import { Observable } from 'rxjs'
+import { Observable, of } from 'rxjs'
 import { convertToStringParams } from '../../core/helper-functions/http-client.helper'
 import { SimpleResponse } from '../data-model/cinematic/empty.response'
 import { IdRequest } from '../data-model/cinematic/id.request'
 import { TMDBGetDetailsResponse } from '../data-model/cinematic/integration/configuration/tmdb-get-details.response'
 import { TMDBSearchMovieRequest } from '../data-model/cinematic/integration/search/tmdb-search-movie.request'
 import { TMDBSearchMovieResponse } from '../data-model/cinematic/integration/search/tmdb-search-movie.response'
+import { TMDBSearchRequest } from '../data-model/cinematic/integration/search/tmdb-search.request'
+import { TMDBSearchResponse } from '../data-model/cinematic/integration/search/tmdb-search.response'
+
+export type SearchResponseMapper<T extends TMDBSearchRequest> = T extends TMDBSearchMovieRequest
+  ? TMDBSearchMovieResponse
+  : TMDBSearchResponse
 
 @Injectable({
   providedIn: 'root',
@@ -30,11 +36,16 @@ export class CinematicClientService {
     Movie
   */
 
-  searchMovie(request: TMDBSearchMovieRequest): Observable<TMDBSearchMovieResponse> {
+  search<T extends TMDBSearchRequest>(request: T): Observable<SearchResponseMapper<T>> {
     const params = new HttpParams({
       fromObject: convertToStringParams(request),
     })
-    return this.http.get<TMDBSearchMovieResponse>(`${this.tmdbURL}/search`, { params })
+
+    if (request.discriminator === 'MOVIE') {
+      return this.http.get<SearchResponseMapper<T>>(`${this.tmdbURL}/search`, { params })
+    }
+
+    return of({} as SearchResponseMapper<T>)
   }
 
   addCinematic(request: IdRequest): Observable<SimpleResponse> {

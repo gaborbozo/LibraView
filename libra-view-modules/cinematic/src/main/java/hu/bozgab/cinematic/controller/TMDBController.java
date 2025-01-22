@@ -2,7 +2,7 @@ package hu.bozgab.cinematic.controller;
 
 import hu.bozgab.cinematic.dto.integration.configuration.TMDBGetDetailsResponse;
 import hu.bozgab.cinematic.dto.integration.search.TMDBSearchMovieRequest;
-import hu.bozgab.cinematic.dto.integration.search.TMDBSearchMovieResponse;
+import hu.bozgab.cinematic.dto.integration.search.TMDBSearchResponse;
 import hu.bozgab.cinematic.service.TMDBService;
 
 import lombok.RequiredArgsConstructor;
@@ -27,8 +27,8 @@ public class TMDBController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<TMDBSearchMovieResponse> search(@ModelAttribute TMDBSearchMovieRequest request) {
-        return ResponseEntity.ok(tmdbService.searchMovie(request));
+    public ResponseEntity<TMDBSearchResponse> search(@ModelAttribute TMDBSearchMovieRequest request) {
+        return ResponseEntity.ok(tmdbService.search(request));
     }
 
 }

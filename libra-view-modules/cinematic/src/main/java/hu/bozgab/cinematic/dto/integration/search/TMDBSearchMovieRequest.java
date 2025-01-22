@@ -2,6 +2,7 @@ package hu.bozgab.cinematic.dto.integration.search;
 
 import hu.bozgab.cinematic.dto.integration.core.TMDBGeneralRequest;
 
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,7 +19,8 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @EqualsAndHashCode(callSuper = true, exclude = {})
 @ToString(callSuper = true, exclude = {})
-public class TMDBSearchMovieRequest extends TMDBGeneralRequest {
+@JsonTypeName("MOVIE")
+public class TMDBSearchMovieRequest extends TMDBSearchRequest implements TMDBGeneralRequest {
 
     private String query;
 

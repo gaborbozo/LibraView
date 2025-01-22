@@ -9,6 +9,9 @@ import hu.bozgab.cinematic.dto.integration.core.TMDBGeneralResponse;
 import hu.bozgab.cinematic.dto.integration.genres.TMDBGenreDTO;
 import hu.bozgab.cinematic.dto.integration.search.TMDBSearchMovieRequest;
 import hu.bozgab.cinematic.dto.integration.search.TMDBSearchMovieResponse;
+import hu.bozgab.cinematic.dto.integration.search.TMDBSearchRequest;
+import hu.bozgab.cinematic.dto.integration.search.TMDBSearchResponse;
+import hu.bozgab.cinematic.exception.UnsupportedTypeException;
 import hu.bozgab.cinematic.mapper.TMDBMapper;
 import hu.bozgab.cinematic.service.CinematicCacheService;
 import hu.bozgab.cinematic.service.TMDBService;
@@ -64,17 +67,21 @@ public class TMDBServiceImpl implements TMDBService {
     }
 
     @Override
-    public TMDBSearchMovieResponse searchMovie(TMDBSearchMovieRequest request) {
-        TMDBSearchMovieResponse response =
-                createResponseObjectFromRawString(
-                        tmdbJsonPlaceholderService.search(TMDBSearchSubPath.movie, createParameterMapFromObject(request)),
-                        TMDBSearchMovieResponse.class
-                );
+    public TMDBSearchResponse search(TMDBSearchRequest request) {
+        if(request instanceof TMDBSearchMovieRequest movieRequest) {
+            TMDBSearchMovieResponse response = createResponseObjectFromRawString(
+                    tmdbJsonPlaceholderService.search(TMDBSearchSubPath.movie, createParameterMapFromObject(movieRequest)),
+                    TMDBSearchMovieResponse.class
+            );
 
-        // TODO This caching must be temporary
-        //  in future versions frontend needs to handle the search and only on add backend will get the cinematic element by id
-        tmdbMapper.toMovieDTOS(response.getResults()).forEach(cinematicCacheService::updateCinematic);
-        return response;
+            // TODO This caching must be temporary
+            //  in future versions frontend needs to handle the search and only on add backend will get the cinematic element by id
+            tmdbMapper.toMovieDTOS(response.getResults()).forEach(cinematicCacheService::updateCinematic);
+
+            return response;
+        } else {
+            throw new UnsupportedTypeException(request.getClass());
+        }
     }
 
     /*

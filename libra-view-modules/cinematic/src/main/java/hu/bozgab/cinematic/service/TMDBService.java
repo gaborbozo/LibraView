@@ -2,8 +2,8 @@ package hu.bozgab.cinematic.service;
 
 import hu.bozgab.cinematic.dto.integration.configuration.TMDBGetDetailsResponse;
 import hu.bozgab.cinematic.dto.integration.genres.TMDBGenreDTO;
-import hu.bozgab.cinematic.dto.integration.search.TMDBSearchMovieRequest;
-import hu.bozgab.cinematic.dto.integration.search.TMDBSearchMovieResponse;
+import hu.bozgab.cinematic.dto.integration.search.TMDBSearchRequest;
+import hu.bozgab.cinematic.dto.integration.search.TMDBSearchResponse;
 
 import java.util.List;
 
@@ -14,6 +14,6 @@ public interface TMDBService {
 
     List<TMDBGenreDTO> getGenres();
 
-    TMDBSearchMovieResponse searchMovie(TMDBSearchMovieRequest request);
+    TMDBSearchResponse search(TMDBSearchRequest request);
 
 }

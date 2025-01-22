@@ -20,9 +20,12 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-@EqualsAndHashCode(callSuper = false, exclude = {})
+@EqualsAndHashCode(callSuper = true, exclude = {})
 @ToString(callSuper = true, exclude = {})
-public class TMDBSearchMovieResponse extends TMDBGeneralResponse {
+public class TMDBSearchMovieResponse extends TMDBSearchResponse implements TMDBGeneralResponse {
+
+    @Builder.Default
+    private String discriminator = "MOVIE";
 
     private int page;
 
