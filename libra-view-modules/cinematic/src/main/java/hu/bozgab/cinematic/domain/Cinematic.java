@@ -16,14 +16,12 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import lombok.Getter;
+import lombok.Setter;
 
 
-@Data
-@EqualsAndHashCode(callSuper = false, exclude = {})
-@ToString(callSuper = true, exclude = {})
+@Getter
+@Setter
 @Entity
 @Table(name = "CINEMATIC")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)

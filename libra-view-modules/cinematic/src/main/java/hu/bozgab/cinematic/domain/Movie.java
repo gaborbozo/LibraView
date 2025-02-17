@@ -2,14 +2,12 @@ package hu.bozgab.cinematic.domain;
 
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import lombok.Getter;
+import lombok.Setter;
 
 
-@Data
-@EqualsAndHashCode(callSuper = false, exclude = {})
-@ToString(callSuper = true, exclude = {})
+@Getter
+@Setter
 @Entity
 @DiscriminatorValue("MOVIE")
 public class Movie extends Cinematic {
