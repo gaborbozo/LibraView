@@ -3,8 +3,6 @@ mat-toolbar {
 }
 
 mat-drawer-container {
-  height: 100%;
-
   mat-drawer {
     padding-left: 8px;
     display: flex;
@@ -12,7 +10,7 @@ mat-drawer-container {
     align-items: flex-start;
   }
 
-  mat-drawer-content.libra-view-main-content {
+  mat-drawer-content.libra-main-content {
     padding: 8px 16px 8px 16px;
   }
 }
