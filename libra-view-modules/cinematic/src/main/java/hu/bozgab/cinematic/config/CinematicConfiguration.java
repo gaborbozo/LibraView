@@ -10,6 +10,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.ObjectFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -19,12 +20,11 @@ import org.springframework.http.HttpRequest;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.support.HttpRequestWrapper;
+import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.support.RestClientAdapter;
 import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 import org.springframework.web.util.UriComponentsBuilder;
-
-import static hu.bozgab.cinematic.config.CinematicResources.TMDB_API_KEY;
 
 
 @Slf4j
@@ -36,6 +36,9 @@ import static hu.bozgab.cinematic.config.CinematicResources.TMDB_API_KEY;
 public class CinematicConfiguration {
 
     private final ObjectFactory<HttpSession> httpSessionFactory;
+
+    @Value("${tmdb.authentication.token}")
+    private String tmdbToken;
 
     private final TMDBProperties tmdbProperties;
 
@@ -49,18 +52,17 @@ public class CinematicConfiguration {
                 @NonNull
                 @Override
                 public URI getURI() {
-                    URI uri = super.getURI();
-                    Object apiKey = httpSessionFactory.getObject().getAttribute(TMDB_API_KEY);
-                    if(apiKey == null) {
+                    if(StringUtils.hasText(tmdbToken)) {
                         throw new TMDBAPIKeyNotSetException();
                     }
+                    URI uri = super.getURI();
 
                     String escapedQuery = uri.getRawQuery();
                     // escapedQuery is null when no query parameters are used
                     if(escapedQuery == null) {
                         escapedQuery = "";
                     }
-                    escapedQuery += (escapedQuery.contains("?") ? "?api_key=" : "&api_key=") + apiKey;
+                    escapedQuery += (escapedQuery.contains("?") ? "?api_key=" : "&api_key=") + tmdbToken;
                     return UriComponentsBuilder.fromUri(uri)
                             .replaceQuery(escapedQuery)
                             .build(true).toUri();
