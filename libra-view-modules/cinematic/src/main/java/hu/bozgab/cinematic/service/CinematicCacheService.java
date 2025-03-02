@@ -1,14 +1,15 @@
 package hu.bozgab.cinematic.service;
 
-import hu.bozgab.cinematic.dto.CinematicDTO;
-
 import java.util.Optional;
+
+import hu.bozgab.cinematic.dto.CinematicDTO;
+import hu.bozgab.cinematic.dto.CinematicRequest;
 
 
 public interface CinematicCacheService {
 
     void updateCinematic(CinematicDTO cinematicDTO);
 
-    Optional<CinematicDTO> getCinematic(Long cinematicId);
+    Optional<CinematicDTO> getCinematic(CinematicRequest request);
 
 }

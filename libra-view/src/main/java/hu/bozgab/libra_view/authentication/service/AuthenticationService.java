@@ -1,10 +1,9 @@
 package hu.bozgab.libra_view.authentication.service;
 
-import hu.bozgab.libra_view.authentication.dto.LibraUserDTO;
 import hu.bozgab.libra_view.authentication.dto.LoginRequest;
-import hu.bozgab.libra_view.authentication.mapper.UserMapper;
-import hu.bozgab.libra_view.authentication.repository.LibraUserRepository;
-
+import hu.bozgab.shared.authentication.dto.LibraUserDTO;
+import hu.bozgab.shared.authentication.mapper.UserMapper;
+import hu.bozgab.shared.authentication.repository.LibraUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

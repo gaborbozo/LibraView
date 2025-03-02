@@ -1,5 +1,16 @@
 package hu.bozgab.cinematic.service.impl;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import hu.bozgab.cinematic.client.TMDBJsonPlaceholderService;
 import hu.bozgab.cinematic.client.subpaths.TMDBGenreSubPath;
 import hu.bozgab.cinematic.client.subpaths.TMDBSearchSubPath;
@@ -15,18 +26,6 @@ import hu.bozgab.cinematic.exception.UnsupportedTypeException;
 import hu.bozgab.cinematic.mapper.TMDBMapper;
 import hu.bozgab.cinematic.service.CinematicCacheService;
 import hu.bozgab.cinematic.service.TMDBService;
-
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;

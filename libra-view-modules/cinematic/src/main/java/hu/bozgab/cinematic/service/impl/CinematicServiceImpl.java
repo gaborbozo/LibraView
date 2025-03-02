@@ -1,26 +1,31 @@
 package hu.bozgab.cinematic.service.impl;
 
-import hu.bozgab.cinematic.domain.Cinematic;
-import hu.bozgab.cinematic.domain.Genre;
-import hu.bozgab.cinematic.dto.CinematicDTO;
-import hu.bozgab.cinematic.dto.GenreDTO;
-import hu.bozgab.cinematic.dto.IdRequest;
-import hu.bozgab.cinematic.dto.integration.genres.TMDBGenreDTO;
-import hu.bozgab.cinematic.mapper.CinematicMapper;
-import hu.bozgab.cinematic.mapper.GenreMapper;
-import hu.bozgab.cinematic.mapper.TMDBMapper;
-import hu.bozgab.cinematic.repository.CinematicRepository;
-import hu.bozgab.cinematic.repository.GenreRepository;
-import hu.bozgab.cinematic.service.CinematicCacheService;
-import hu.bozgab.cinematic.service.CinematicService;
-import hu.bozgab.cinematic.service.TMDBService;
-import hu.bozgab.cinematic.shared.CacheEntry;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
+import hu.bozgab.cinematic.domain.Cinematic;
+import hu.bozgab.cinematic.domain.Genre;
+import hu.bozgab.cinematic.dto.CinematicDTO;
+import hu.bozgab.cinematic.dto.CinematicRequest;
+import hu.bozgab.cinematic.dto.GenreDTO;
+import hu.bozgab.cinematic.dto.enums.CinematicType;
+import hu.bozgab.cinematic.dto.integration.genres.TMDBGenreDTO;
+import hu.bozgab.cinematic.exception.CinematicNotFound;
+import hu.bozgab.cinematic.mapper.CinematicMapper;
+import hu.bozgab.cinematic.mapper.GenreMapper;
+import hu.bozgab.cinematic.mapper.TMDBMapper;
+import hu.bozgab.cinematic.repository.CinematicRepository;
+import hu.bozgab.cinematic.repository.GenreRepository;
+import hu.bozgab.cinematic.repository.MovieRepository;
+import hu.bozgab.cinematic.service.CinematicCacheService;
+import hu.bozgab.cinematic.service.CinematicService;
+import hu.bozgab.cinematic.service.TMDBService;
+import hu.bozgab.shared.authentication.dto.LibraUserDTO;
+import hu.bozgab.shared.authentication.repository.LibraUserRepository;
+import hu.bozgab.shared.authentication.service.LibraUserContext;
+import hu.bozgab.shared.cache.dto.CacheEntry;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -33,9 +38,12 @@ import org.springframework.stereotype.Service;
 public class CinematicServiceImpl implements CinematicService, CinematicCacheService {
 
     private final TMDBService tmdbService;
+    private final LibraUserContext libraUserContext;
 
     private final CinematicRepository cinematicRepository;
+    private final MovieRepository movieRepository;
     private final GenreRepository genreRepository;
+    private final LibraUserRepository libraUserRepository;
 
     private final CinematicMapper cinematicMapper;
     private final GenreMapper genreMapper;
@@ -63,28 +71,51 @@ public class CinematicServiceImpl implements CinematicService, CinematicCacheSer
     }
 
     @Override
-    public void addCinematic(IdRequest request) {
-        if(cachedCinematics.containsKey(request.getId())) {
-            if(!cinematicRepository.existsByTmdbId(request.getId())) {
-                Cinematic cinematic = cinematicMapper
-                        .toCinematicEntityForPersist(null, cachedCinematics.get(request.getId()).getValue());
+    public void addCinematic(CinematicRequest request) {
+        Optional<CinematicDTO> cinematicDTO = getCinematic(request);
 
-                cinematicRepository.save(cinematic);
-            }
+        // This cache should only be used while tracking Movies; it must be deleted or refactored afterward.
+        if(cinematicDTO.isEmpty() && cachedCinematics.containsKey(request.getId())) {
+            cinematicDTO = Optional.of(cachedCinematics.get(request.getId()).getValue());
         }
+        if(cinematicDTO.isEmpty()) {
+            throw new CinematicNotFound();
+        }
+
+        LibraUserDTO user = libraUserContext.getCurrentUser();
+
+        Long id;
+        if(!cinematicRepository.existsByTmdbId(request.getId())) {
+            Cinematic cinematic = cinematicMapper
+                    .toCinematicEntityForPersist(null, cachedCinematics.get(request.getId()).getValue());
+
+            cinematic = cinematicRepository.save(cinematic);
+            id = cinematic.getId();
+        } else {
+            id = cinematicDTO.get().getId();
+        }
+
+        cinematicRepository.findById(id).ifPresent(cinematic -> {
+            cinematic.getUsers().add(libraUserRepository.findById(user.getId()).orElseThrow(CinematicNotFound::new));
+            cinematicRepository.save(cinematic);
+        });
     }
 
     @Override
     public void updateCinematic(CinematicDTO cinematicDTO) {
-        cachedCinematics.put(cinematicDTO.getId(), new CacheEntry<CinematicDTO>(cinematicDTO, EXPIRATION_TIME));
+        cachedCinematics.put(cinematicDTO.getTmdbId(), new CacheEntry<CinematicDTO>(cinematicDTO, EXPIRATION_TIME));
     }
 
     @Override
-    public Optional<CinematicDTO> getCinematic(Long cinematicId) {
-        CacheEntry<CinematicDTO> cinematicDTO = cachedCinematics
-                .computeIfPresent(cinematicId, (_, dto) -> dto.isExpired() ? null : dto);
+    public Optional<CinematicDTO> getCinematic(CinematicRequest request) {
+        Optional<? extends Cinematic> cinematic;
 
-        return cinematicDTO != null ? Optional.of(cinematicDTO.getValue()) : Optional.empty();
+        switch(request.getCinematic()) {
+            case CinematicType.MOVIE -> cinematic = movieRepository.findByTmdbId(request.getId());
+            default -> throw new CinematicNotFound();
+        }
+
+        return cinematic.map(cinematicMapper::toCinematicDTO);
     }
 
     @Scheduled(fixedRate = 60_000)

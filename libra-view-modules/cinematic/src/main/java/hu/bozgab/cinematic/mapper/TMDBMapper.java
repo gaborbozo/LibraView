@@ -1,13 +1,12 @@
 package hu.bozgab.cinematic.mapper;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import hu.bozgab.cinematic.domain.Genre;
 import hu.bozgab.cinematic.dto.MovieDTO;
 import hu.bozgab.cinematic.dto.integration.genres.TMDBGenreDTO;
 import hu.bozgab.cinematic.dto.integration.movies.TMDBMovieDetailsDTO;
-
-import java.util.List;
-import java.util.stream.Collectors;
-
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -46,6 +45,7 @@ public abstract class TMDBMapper {
         return tmdbMovieDetailsDTOS.stream().map(this::toMovieDTO).collect(Collectors.toList());
     }
 
+    @Mapping(target = "id", ignore = true)
     @Mapping(target = "tmdbId", source = "id")
     @Mapping(target = "title", source = "title")
     @Mapping(target = "releaseDate", source = "release_date")

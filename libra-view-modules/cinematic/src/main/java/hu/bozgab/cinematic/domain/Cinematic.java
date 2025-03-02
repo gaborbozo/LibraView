@@ -3,6 +3,8 @@ package hu.bozgab.cinematic.domain;
 import java.util.Date;
 import java.util.Set;
 
+import hu.bozgab.shared.authentication.domain.LibraUser;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.DiscriminatorType;
@@ -63,5 +65,14 @@ public class Cinematic {
             joinColumns = @JoinColumn(name = "CINEMATIC_ID"),
             inverseJoinColumns = @JoinColumn(name = "GENRE_ID"))
     private Set<Genre> genres;
+
+    /*
+        Defined on the cinematic side to maintain a loose coupling between the Libra app and the module.
+     */
+    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH })
+    @JoinTable(name = "user_cinematic",
+            joinColumns = { @JoinColumn(name = "userId") },
+            inverseJoinColumns = { @JoinColumn(name = "cinematicId") })
+    private Set<LibraUser> users;
 
 }

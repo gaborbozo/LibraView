@@ -1,4 +1,4 @@
-package hu.bozgab.cinematic.shared;
+package hu.bozgab.shared.cache.dto;
 
 
 import lombok.AllArgsConstructor;

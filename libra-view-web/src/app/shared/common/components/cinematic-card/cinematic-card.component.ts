@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core'
 import { LibraInitializer } from '../../../../core/services/libra-initializer.service'
 import { CinematicClientService } from '../../../client-service/cinematic-client.service'
+import { CinematicType } from '../../../data-model/cinematic/enums/cinematic-type'
 import { TMDBMovieDetailsDTO } from '../../../data-model/cinematic/integration/movies/tmdb-movie-details.dto'
 
 @Component({
@@ -26,6 +27,6 @@ export class CinematicCardComponent implements OnInit {
   }
 
   addMovieItem(id: number) {
-    this.movieClient.addCinematic({ id: id }).subscribe()
+    this.movieClient.addCinematic({ cinematic: CinematicType.MOVIE, id: id }).subscribe()
   }
 }

@@ -1,4 +1,4 @@
-package hu.bozgab.libra_view.authentication.domain;
+package hu.bozgab.shared.authentication.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

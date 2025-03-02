@@ -45,6 +45,12 @@
     </properties>
 
     <dependencies>
+        <!-- Shared -->
+        <dependency>
+            <groupId>hu.bozgab</groupId>
+            <artifactId>shared</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
         <!-- WEB -->
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web -->
         <dependency>

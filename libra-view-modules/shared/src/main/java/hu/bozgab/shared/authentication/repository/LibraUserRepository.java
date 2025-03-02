@@ -1,9 +1,8 @@
-package hu.bozgab.libra_view.authentication.repository;
-
-import hu.bozgab.libra_view.authentication.domain.LibraUser;
+package hu.bozgab.shared.authentication.repository;
 
 import java.util.Optional;
 
+import hu.bozgab.shared.authentication.domain.LibraUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

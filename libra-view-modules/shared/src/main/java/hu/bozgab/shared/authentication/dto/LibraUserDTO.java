@@ -1,4 +1,4 @@
-package hu.bozgab.libra_view.authentication.dto;
+package hu.bozgab.shared.authentication.dto;
 
 import java.util.ArrayList;
 import java.util.List;

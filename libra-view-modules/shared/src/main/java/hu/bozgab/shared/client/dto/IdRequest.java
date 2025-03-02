@@ -1,22 +1,22 @@
-package hu.bozgab.cinematic.dto;
+package hu.bozgab.shared.client.dto;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 
 @Data
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @EqualsAndHashCode(callSuper = false, exclude = {})
 @ToString(callSuper = true, exclude = {})
-public class SimpleResponse {
+public class IdRequest {
 
-    String message;
+    private Long id;
 
 }
