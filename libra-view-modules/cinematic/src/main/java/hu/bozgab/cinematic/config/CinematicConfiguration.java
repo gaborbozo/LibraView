@@ -3,8 +3,6 @@ package hu.bozgab.cinematic.config;
 import hu.bozgab.cinematic.client.TMDBJsonPlaceholderService;
 import hu.bozgab.cinematic.exception.TMDBAPIKeyNotSetException;
 
-import java.net.URI;
-
 import jakarta.servlet.http.HttpSession;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -16,15 +14,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.support.HttpRequestWrapper;
-import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.support.RestClientAdapter;
 import org.springframework.web.service.invoker.HttpServiceProxyFactory;
-import org.springframework.web.util.UriComponentsBuilder;
 
 
 @Slf4j
@@ -51,21 +48,17 @@ public class CinematicConfiguration {
             HttpRequest encodedRequest = new HttpRequestWrapper(request) {
                 @NonNull
                 @Override
-                public URI getURI() {
-                    if(StringUtils.hasText(tmdbToken)) {
+                public HttpHeaders getHeaders() {
+                    HttpHeaders headers = super.getHeaders();
+                    headers.setContentType(MediaType.APPLICATION_JSON);
+
+                    if(tmdbToken == null) {
                         throw new TMDBAPIKeyNotSetException();
                     }
-                    URI uri = super.getURI();
 
-                    String escapedQuery = uri.getRawQuery();
-                    // escapedQuery is null when no query parameters are used
-                    if(escapedQuery == null) {
-                        escapedQuery = "";
-                    }
-                    escapedQuery += (escapedQuery.contains("?") ? "?api_key=" : "&api_key=") + tmdbToken;
-                    return UriComponentsBuilder.fromUri(uri)
-                            .replaceQuery(escapedQuery)
-                            .build(true).toUri();
+                    headers.setBearerAuth(tmdbToken);
+
+                    return headers;
                 }
             };
             return execution.execute(encodedRequest, body);
