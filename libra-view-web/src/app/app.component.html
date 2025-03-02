@@ -1,17 +1,28 @@
-<mat-toolbar>
+<mat-toolbar class="flex-0">
   <button mat-icon-button [toggleDrawer]="drawer">
     <mat-icon>menu</mat-icon>
   </button>
   <span>LibraView</span>
 </mat-toolbar>
-<mat-drawer-container [hasBackdrop]="true">
+<mat-drawer-container [hasBackdrop]="true" class="flex-1">
   <mat-drawer #drawer [mode]="'over'">
-    <h5 [routerLink]="['/cinematic']">Cinematics</h5>
-    <button mat-raised-button [routerLink]="['/cinematic/search']" [toggleDrawer]="drawer">
-      Search
-    </button>
+    <div class="height-100 px-1 flex-col gap-16">
+      <h5 [routerLink]="['/cinematic']">Cinematics</h5>
+      <button mat-raised-button [routerLink]="['/cinematic/search']" [toggleDrawer]="drawer">
+        Search
+      </button>
+      <!-- TODO: Consider refactoring LibraAuthenticationService by adding a ReplaySubject to keep the current user's information updated and avoid querying it on every frame -->
+      <button
+        mat-raised-button
+        *ngIf="authenticationService.isLoggedIn()"
+        (click)="authenticationService.logout()"
+        class="mt-auto"
+      >
+        Logout
+      </button>
+    </div>
   </mat-drawer>
-  <mat-drawer-content class="libra-view-main-content">
+  <mat-drawer-content class="libra-main-content">
     <router-outlet />
   </mat-drawer-content>
 </mat-drawer-container>

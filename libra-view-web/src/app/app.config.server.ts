@@ -10,8 +10,11 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { provideServerRendering } from '@angular/platform-server'
 import { provideRouter, Routes } from '@angular/router'
 import { ApiInterceptor } from './core/interceptors/api.interceptor'
+import { AuthInterceptor } from './core/interceptors/auth.interceptor'
+import { LibraAuthenticationGuard } from './core/services/libra-authentication-guard'
 import { LibraInitializer } from './core/services/libra-initializer.service'
 import { HomeComponent } from './features/home/home.component'
+import { LoginComponent } from './features/login/login.component'
 
 export const routes: Routes = [
   {
@@ -20,10 +23,16 @@ export const routes: Routes = [
     title: 'LibraView',
   },
   {
+    path: 'login',
+    component: LoginComponent,
+    title: 'Login',
+  },
+  {
     path: 'cinematic',
     loadChildren: () =>
       import('./features/cinematic/cinematic.module').then((m) => m.CinematicModule),
     title: 'Cinematic',
+    canActivate: [LibraAuthenticationGuard],
   },
   {
     path: '**',
@@ -47,6 +56,11 @@ export const appConfig: ApplicationConfig = {
     {
       provide: HTTP_INTERCEPTORS,
       useClass: ApiInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
       multi: true,
     },
     /*

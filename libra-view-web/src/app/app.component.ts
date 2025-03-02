@@ -1,5 +1,6 @@
 import { Component } from '@angular/core'
 import { RouterModule, RouterOutlet } from '@angular/router'
+import { LibraAuthenticationService } from './core/services/libra-authentication-service'
 import { LibraCommonModule } from './shared/common/libra-common.module'
 import { SharedModule } from './shared/shared.module'
 
@@ -10,4 +11,6 @@ import { SharedModule } from './shared/shared.module'
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
-export class AppComponent {}
+export class AppComponent {
+  constructor(public authenticationService: LibraAuthenticationService) {}
+}

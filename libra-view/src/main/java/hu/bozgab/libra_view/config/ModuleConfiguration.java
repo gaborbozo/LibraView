@@ -11,11 +11,9 @@ import org.springframework.util.ClassUtils;
 
 
 @Log4j2
-@ComponentScan(basePackages = { "hu.bozgab.cinematic.config" })
-@ComponentScan(basePackages = { "hu.bozgab.book.config" })
-@ComponentScan(basePackages = { "hu.bozgab.note.config" })
+@ComponentScan(basePackages = { "hu.bozgab.cinematic.config", "hu.bozgab.book.config", "hu.bozgab.note.config" })
 @Configuration
-public class ModuleConfig {
+public class ModuleConfiguration {
 
     @Value("${libra.modules}")
     private String[] modules;

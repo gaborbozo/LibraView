@@ -24,3 +24,12 @@ spring:
   sql:
     init:
       platform: postgres
+##################### Security
+security:
+  jwt:
+    secret-key: # wich will be used by the JWT service
+    expiration-time: # in ms
+##################### TMDB
+tmdb:
+  authentication:
+    token: # TMDB access token
