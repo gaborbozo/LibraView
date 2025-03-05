@@ -18,33 +18,23 @@ import lombok.ToString;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @EqualsAndHashCode(callSuper = false, exclude = {})
 @ToString(callSuper = true, exclude = {})
-public class TMDBMovieDetailsDTO {
-
-    private Boolean adult;
+public class TMDBMovieGeneral {
 
     private String backdrop_path;
 
+    private Set<Integer> genre_ids;
+
     private Long id;
-
-    private String title;
-
-    private String original_language;
-
-    private String original_title;
 
     private String overview;
 
-    private String poster_path;
-
-    private String media_type;
-
-    private Set<Integer> genre_ids;
-
     private Double popularity;
+
+    private String poster_path;
 
     private Date release_date;
 
-    private Boolean video;
+    private String title;
 
     private Double vote_average;
 

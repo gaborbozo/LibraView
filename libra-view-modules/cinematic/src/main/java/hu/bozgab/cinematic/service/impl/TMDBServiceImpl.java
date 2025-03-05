@@ -17,34 +17,28 @@ import hu.bozgab.cinematic.client.subpaths.TMDBSearchSubPath;
 import hu.bozgab.cinematic.dto.integration.configuration.TMDBGetDetailsResponse;
 import hu.bozgab.cinematic.dto.integration.core.TMDBGeneralRequest;
 import hu.bozgab.cinematic.dto.integration.core.TMDBGeneralResponse;
-import hu.bozgab.cinematic.dto.integration.genres.TMDBGenreDTO;
+import hu.bozgab.cinematic.dto.integration.genres.TMDBGenre;
+import hu.bozgab.cinematic.dto.integration.movies.TMDBMovieDetails;
 import hu.bozgab.cinematic.dto.integration.search.TMDBSearchMovieRequest;
 import hu.bozgab.cinematic.dto.integration.search.TMDBSearchMovieResponse;
 import hu.bozgab.cinematic.dto.integration.search.TMDBSearchRequest;
 import hu.bozgab.cinematic.dto.integration.search.TMDBSearchResponse;
 import hu.bozgab.cinematic.exception.UnsupportedTypeException;
-import hu.bozgab.cinematic.mapper.TMDBMapper;
-import hu.bozgab.cinematic.service.CinematicCacheService;
+import hu.bozgab.cinematic.mapper.TMDBMovieMapper;
 import hu.bozgab.cinematic.service.TMDBService;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
 
+@Log4j2
 @RequiredArgsConstructor
 @Service
 public class TMDBServiceImpl implements TMDBService {
 
     private final TMDBJsonPlaceholderService tmdbJsonPlaceholderService;
 
-    @Setter
-    @Lazy
-    @Autowired
-    private CinematicCacheService cinematicCacheService;
-
-    private final TMDBMapper tmdbMapper;
+    private final TMDBMovieMapper tmdbMovieMapper;
     private final ObjectMapper objectMapper;
 
 
@@ -54,13 +48,13 @@ public class TMDBServiceImpl implements TMDBService {
     }
 
     @Override
-    public List<TMDBGenreDTO> getGenres() {
+    public List<TMDBGenre> getGenres() {
         // Parsing into a map to discard duplicates
         return new ArrayList<>(Stream.concat(
                         tmdbJsonPlaceholderService.genre(TMDBGenreSubPath.tv).getGenres().stream(),
                         tmdbJsonPlaceholderService.genre(TMDBGenreSubPath.movie).getGenres().stream())
                 .collect(
-                        Collectors.toMap(TMDBGenreDTO::getId, Function.identity(), (_, replacement) -> replacement
+                        Collectors.toMap(TMDBGenre::getId, Function.identity(), (_, replacement) -> replacement
                         ))
                 .values());
     }
@@ -68,19 +62,26 @@ public class TMDBServiceImpl implements TMDBService {
     @Override
     public TMDBSearchResponse search(TMDBSearchRequest request) {
         if(request instanceof TMDBSearchMovieRequest movieRequest) {
+            String rawResponse = tmdbJsonPlaceholderService.search(TMDBSearchSubPath.movie, createParameterMapFromObject(movieRequest));
             TMDBSearchMovieResponse response = createResponseObjectFromRawString(
-                    tmdbJsonPlaceholderService.search(TMDBSearchSubPath.movie, createParameterMapFromObject(movieRequest)),
+                    rawResponse,
                     TMDBSearchMovieResponse.class
             );
-
-            // TODO This caching must be temporary
-            //  in future versions frontend needs to handle the search and only on add backend will get the cinematic element by id
-            tmdbMapper.toMovieDTOS(response.getResults()).forEach(cinematicCacheService::updateCinematic);
 
             return response;
         } else {
             throw new UnsupportedTypeException(request.getClass());
         }
+    }
+
+    @Override
+    public TMDBMovieDetails getMovieDetails(Long movieId) {
+        String rawResponse = tmdbJsonPlaceholderService.movieDetails(movieId);
+        TMDBMovieDetails response = createResponseObjectFromRawString(
+                rawResponse,
+                TMDBMovieDetails.class
+        );
+        return response;
     }
 
     /*
@@ -109,6 +110,7 @@ public class TMDBServiceImpl implements TMDBService {
         try {
             response = objectMapper.readValue(rawResponse, clazz);
         } catch(JsonProcessingException e) {
+            log.error("Failed to parse response: " + rawResponse, e);
             throw new RuntimeException(e);
         }
 

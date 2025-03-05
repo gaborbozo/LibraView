@@ -18,7 +18,7 @@ import lombok.ToString;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @EqualsAndHashCode(callSuper = false, exclude = {})
 @ToString(callSuper = true, exclude = {})
-public class TMDBImageDetailsDTO {
+public class TMDBImageDetails {
 
     private String base_url;
 

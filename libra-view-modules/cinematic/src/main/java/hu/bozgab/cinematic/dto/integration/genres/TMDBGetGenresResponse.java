@@ -21,6 +21,6 @@ import lombok.ToString;
 public class TMDBGetGenresResponse {
 
     @Builder.Default
-    private List<TMDBGenreDTO> genres = new ArrayList<>();
+    private List<TMDBGenre> genres = new ArrayList<>();
 
 }

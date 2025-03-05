@@ -59,6 +59,9 @@ public class Cinematic {
     @Column(name = "VOTE_COUNT")
     private Integer voteCount;
 
+    @Column(name = "POPULARITY")
+    private Double popularity;
+
     @ManyToMany
     @JoinTable(
             name = "CINEMATIC_GENRE",

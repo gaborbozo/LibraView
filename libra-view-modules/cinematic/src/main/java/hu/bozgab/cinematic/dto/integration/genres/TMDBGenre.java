@@ -1,7 +1,4 @@
-package hu.bozgab.cinematic.dto.integration.configuration;
-
-import java.util.ArrayList;
-import java.util.List;
+package hu.bozgab.cinematic.dto.integration.genres;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -18,11 +15,10 @@ import lombok.ToString;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @EqualsAndHashCode(callSuper = false, exclude = {})
 @ToString(callSuper = true, exclude = {})
-public class TMDBGetDetailsResponse {
+public class TMDBGenre {
 
-    private TMDBImageDetails images;
+    private Long id;
 
-    @Builder.Default
-    private List<String> change_keys = new ArrayList<>();
+    private String name;
 
 }

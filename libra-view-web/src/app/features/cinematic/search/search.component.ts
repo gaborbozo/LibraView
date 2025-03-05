@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core'
 import { FormControl, FormGroup } from '@angular/forms'
 import { CinematicClientService } from '../../../shared/client-service/cinematic-client.service'
-import { TMDBMovieDetailsDTO } from '../../../shared/data-model/cinematic/integration/movies/tmdb-movie-details.dto'
+import { TMDBMovieGeneral } from '../../../shared/data-model/cinematic/integration/movies/tmdb-movie-general'
 import { TMDBSearchMovieRequest } from '../../../shared/data-model/cinematic/integration/search/tmdb-search-movie.request'
 
 @Component({
@@ -11,7 +11,7 @@ import { TMDBSearchMovieRequest } from '../../../shared/data-model/cinematic/int
 })
 export class SearchComponent implements OnInit {
   form!: FormGroup
-  items: TMDBMovieDetailsDTO[] = []
+  items: TMDBMovieGeneral[] = []
 
   constructor(private cinematicClient: CinematicClientService) {}
 

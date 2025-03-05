@@ -1,4 +1,4 @@
-package hu.bozgab.cinematic.dto.integration.genres;
+package hu.bozgab.cinematic.dto.integration.general;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -15,10 +15,14 @@ import lombok.ToString;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @EqualsAndHashCode(callSuper = false, exclude = {})
 @ToString(callSuper = true, exclude = {})
-public class TMDBGenreDTO {
+public class TMDBProductionCompany {
 
-    private Long id;
+    private Integer id;
+
+    private String logo_path;
 
     private String name;
+
+    private String origin_country;
 
 }

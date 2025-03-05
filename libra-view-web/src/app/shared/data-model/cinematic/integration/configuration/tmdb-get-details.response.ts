@@ -1,7 +1,7 @@
-import { TMDBImageDetailsDTO } from './tmdb-image-details.dto'
+import { TMDBImageDetails } from './tmdb-image-details'
 
 export interface TMDBGetDetailsResponse {
-  images: TMDBImageDetailsDTO
+  images: TMDBImageDetails
 
   change_keys: Array<string>
 }

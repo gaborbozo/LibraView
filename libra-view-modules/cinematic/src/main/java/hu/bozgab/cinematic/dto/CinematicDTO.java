@@ -51,6 +51,8 @@ public class CinematicDTO {
 
     private Integer voteCount;
 
+    private Double popularity;
+
     @Builder.Default
     private Set<Long> genreIds = new HashSet<>();
 

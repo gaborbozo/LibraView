@@ -1,4 +1,4 @@
-export interface TMDBImageDetailsDTO {
+export interface TMDBImageDetails {
   base_url: string
 
   secure_base_url: string

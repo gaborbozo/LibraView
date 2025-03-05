@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core'
 import { LibraInitializer } from '../../../../core/services/libra-initializer.service'
 import { CinematicClientService } from '../../../client-service/cinematic-client.service'
 import { CinematicType } from '../../../data-model/cinematic/enums/cinematic-type'
-import { TMDBMovieDetailsDTO } from '../../../data-model/cinematic/integration/movies/tmdb-movie-details.dto'
+import { TMDBMovieGeneral } from '../../../data-model/cinematic/integration/movies/tmdb-movie-general'
 
 @Component({
   selector: 'app-cinematic-card',
@@ -16,7 +16,7 @@ export class CinematicCardComponent implements OnInit {
   ) {}
 
   @Input()
-  item!: TMDBMovieDetailsDTO
+  item!: TMDBMovieGeneral
 
   imageBaseUrl?: string
 
