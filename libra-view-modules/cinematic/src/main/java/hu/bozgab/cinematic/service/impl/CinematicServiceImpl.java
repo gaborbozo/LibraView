@@ -65,33 +65,34 @@ public class CinematicServiceImpl implements CinematicService {
 
     @Override
     public void addCinematic(CinematicRequest request) {
-        Optional<CinematicDTO> cinematicDTO = getCinematic(request);
-
-        if(cinematicDTO.isEmpty()) {
-            cinematicDTO = Optional.ofNullable(
-                    tmdbMovieMapper.toMovieDTO(tmdbService.getMovieDetails(request.getId()))
+        Optional<CinematicDTO> optCinematicDTO = getCinematic(request);
+        if(optCinematicDTO.isEmpty()) {
+            optCinematicDTO = Optional.ofNullable(
+                    tmdbMovieMapper.toMovieDTO(
+                            tmdbService.getMovieDetails(request.getId())
+                    )
             );
         }
-        if(cinematicDTO.isEmpty()) {
-            throw new CinematicNotFound();
-        }
+        optCinematicDTO.ifPresentOrElse(cinematicDTO -> {
+                    LibraUserDTO userDTO = libraUserContext.getCurrentUser();
+                    Cinematic cinematic;
+                    if(cinematicDTO.getId() == null) {
+                        cinematic = cinematicRepository.save(cinematicMapper
+                                .toCinematicEntityForPersist(null, cinematicDTO)
+                        );
+                    } else {
+                        cinematic = cinematicRepository.findById(cinematicDTO.getId())
+                                .orElseThrow(CinematicNotFound::new);
+                    }
 
-        LibraUserDTO user = libraUserContext.getCurrentUser();
-        Long id;
-        if(!cinematicRepository.existsByTmdbId(request.getId())) {
-            Cinematic cinematic = cinematicMapper
-                    .toCinematicEntityForPersist(null, cinematicDTO.get());
-
-            cinematic = cinematicRepository.save(cinematic);
-            id = cinematic.getId();
-        } else {
-            id = cinematicDTO.get().getId();
-        }
-
-        cinematicRepository.findById(id).ifPresent(cinematic -> {
-            cinematic.getUsers().add(libraUserRepository.findById(user.getId()).orElseThrow(CinematicNotFound::new));
-            cinematicRepository.save(cinematic);
-        });
+                    cinematic.getUsers().add(
+                            libraUserRepository.findById(userDTO.getId()).orElseThrow(CinematicNotFound::new)
+                    );
+                    cinematicRepository.save(cinematic);
+                },
+                () -> {
+                    throw new CinematicNotFound();
+                });
     }
 
     @Override
@@ -100,7 +101,7 @@ public class CinematicServiceImpl implements CinematicService {
 
         switch(request.getCinematic()) {
             case CinematicType.MOVIE -> cinematic = movieRepository.findByTmdbId(request.getId());
-            default -> throw new CinematicNotFound();
+            default -> throw new RuntimeException("Unsupported cinematic type");
         }
 
         return cinematic.map(cinematicMapper::toCinematicDTO);

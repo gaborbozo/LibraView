@@ -17,8 +17,6 @@ Flyway over Postgresql
 - If the **clearMigration** profile is activated, the **flyway:clean** goal will be executed during the **clean**
   lifecycle phase.
 
-> Currently, when the **clearMigration** profile is active, the **flyway:migrate** goal is not executed
-
 ---
 
 # Remote data access

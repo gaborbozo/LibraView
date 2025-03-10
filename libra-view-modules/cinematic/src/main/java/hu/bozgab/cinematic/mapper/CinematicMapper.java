@@ -27,14 +27,10 @@ public abstract class CinematicMapper {
 
     public Cinematic toCinematicEntityForPersist(@MappingTarget Cinematic cinematicEntity, CinematicDTO cinematicDTO) {
         if(cinematicDTO instanceof MovieDTO m) {
-            if(cinematicEntity == null) {
-                cinematicEntity = new Movie();
-            }
+            cinematicEntity = cinematicEntity == null ? new Movie() : cinematicEntity;
             return toMovieEntityForPersist((Movie) cinematicEntity, m);
         } else if(cinematicDTO instanceof SeriesDTO s) {
-            if(cinematicEntity == null) {
-                cinematicEntity = new Series();
-            }
+            cinematicEntity = cinematicEntity == null ? new Series() : cinematicEntity;
             return toSeriesEntityForPersist((Series) cinematicEntity, s);
         } else {
             throw new RuntimeException("Unsupported cinematic type for id " + cinematicDTO.getId());
@@ -42,10 +38,10 @@ public abstract class CinematicMapper {
     }
 
     @Mapping(target = "id", ignore = true)
-    protected abstract Movie toMovieEntityForPersist(@MappingTarget Movie movieEntity, CinematicDTO cinematicDTO);
+    protected abstract Movie toMovieEntityForPersist(@MappingTarget Movie movieEntity, MovieDTO movieDTO);
 
     @Mapping(target = "id", ignore = true)
-    protected abstract Series toSeriesEntityForPersist(@MappingTarget Series seriesEntity, CinematicDTO cinematicDTO);
+    protected abstract Series toSeriesEntityForPersist(@MappingTarget Series seriesEntity, SeriesDTO seriesDTO);
 
     /*
         DTO conversions
