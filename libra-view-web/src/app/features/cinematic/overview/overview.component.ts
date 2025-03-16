@@ -1,8 +1,8 @@
 import { Component } from '@angular/core'
 
 @Component({
-  selector: 'app-overview',
+  selector: 'app-cinematic-overview',
   templateUrl: './overview.component.html',
   styleUrl: './overview.component.scss',
 })
-export class OverviewComponent {}
+export class CinematicOverviewComponent {}

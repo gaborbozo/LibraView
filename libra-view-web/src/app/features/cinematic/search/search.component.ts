@@ -5,11 +5,11 @@ import { TMDBMovieGeneral } from '../../../shared/data-model/cinematic/integrati
 import { TMDBSearchMovieRequest } from '../../../shared/data-model/cinematic/integration/search/tmdb-search-movie.request'
 
 @Component({
-  selector: 'app-search',
+  selector: 'app-cinematic-search',
   templateUrl: './search.component.html',
   styleUrl: './search.component.scss',
 })
-export class SearchComponent implements OnInit {
+export class CinematicSearchComponent implements OnInit {
   form!: FormGroup
   items: TMDBMovieGeneral[] = []
 

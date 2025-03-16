@@ -8,9 +8,11 @@ import hu.bozgab.cinematic.domain.Cinematic;
 import hu.bozgab.cinematic.domain.Genre;
 import hu.bozgab.cinematic.domain.Movie;
 import hu.bozgab.cinematic.domain.Series;
+import hu.bozgab.cinematic.domain.UserCinematic;
 import hu.bozgab.cinematic.dto.CinematicDTO;
 import hu.bozgab.cinematic.dto.MovieDTO;
 import hu.bozgab.cinematic.dto.SeriesDTO;
+import org.mapstruct.BeanMapping;
 import org.mapstruct.Builder;
 import org.mapstruct.Context;
 import org.mapstruct.Mapper;
@@ -42,6 +44,11 @@ public abstract class CinematicMapper {
 
     @Mapping(target = "id", ignore = true)
     protected abstract Series toSeriesEntityForPersist(@MappingTarget Series seriesEntity, SeriesDTO seriesDTO);
+
+    @BeanMapping(ignoreByDefault = true)
+    @Mapping(target = "userId", expression = "java(userId)")
+    @Mapping(target = "cinematicId", expression = "java(cinematicId)")
+    public abstract UserCinematic createUserCinematicAssociationEntity(Long userId, Long cinematicId);
 
     /*
         DTO conversions

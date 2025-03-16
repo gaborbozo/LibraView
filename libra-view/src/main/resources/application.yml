@@ -27,6 +27,12 @@ security:
   jwt:
     secret-key: # wich will be used by the JWT service
     expiration-time: # in ms
+##################### Logging
+logging:
+  level:
+    root: INFO
+    org.springframework.web: DEBUG
+    org.hibernate: ERROR
 ##################### TMDB
 tmdb:
   authentication:

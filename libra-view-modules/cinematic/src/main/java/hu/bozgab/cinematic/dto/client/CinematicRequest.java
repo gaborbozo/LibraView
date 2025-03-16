@@ -1,4 +1,4 @@
-package hu.bozgab.cinematic.dto;
+package hu.bozgab.cinematic.dto.client;
 
 import hu.bozgab.cinematic.dto.enums.CinematicType;
 import hu.bozgab.shared.client.dto.IdRequest;

@@ -2,12 +2,13 @@ import { HttpClient, HttpParams } from '@angular/common/http'
 import { Injectable } from '@angular/core'
 import { Observable, of } from 'rxjs'
 import { convertToStringParams } from '../../core/helper-functions/http-client.helper'
-import { CinematicRequest } from '../data-model/cinematic/cinematic.request'
 import { TMDBGetDetailsResponse } from '../data-model/cinematic/integration/configuration/tmdb-get-details.response'
 import { TMDBSearchMovieRequest } from '../data-model/cinematic/integration/search/tmdb-search-movie.request'
 import { TMDBSearchMovieResponse } from '../data-model/cinematic/integration/search/tmdb-search-movie.response'
 import { TMDBSearchRequest } from '../data-model/cinematic/integration/search/tmdb-search.request'
 import { TMDBSearchResponse } from '../data-model/cinematic/integration/search/tmdb-search.response'
+import { CinematicRequest } from '../data-model/cinematic/server/cinematic.request'
+import { GetCinematicResponse } from '../data-model/cinematic/server/get-cinematic.response'
 import { SimpleResponse } from '../data-model/common/simple.response'
 
 export type SearchResponseMapper<T extends TMDBSearchRequest> = T extends TMDBSearchMovieRequest
@@ -33,7 +34,7 @@ export class CinematicClientService {
   }
 
   /*
-    Movie
+    Cinematic
   */
 
   search<T extends TMDBSearchRequest>(request: T): Observable<SearchResponseMapper<T>> {
@@ -48,7 +49,11 @@ export class CinematicClientService {
     return of({} as SearchResponseMapper<T>)
   }
 
-  addCinematic(request: CinematicRequest): Observable<SimpleResponse> {
+  add(request: CinematicRequest): Observable<SimpleResponse> {
     return this.http.post<SimpleResponse>(`${this.cinematicURL}/addCinematic`, request)
+  }
+
+  getMultiple(): Observable<GetCinematicResponse> {
+    return this.http.get<GetCinematicResponse>(`${this.cinematicURL}/getCinematics`)
   }
 }

@@ -12,7 +12,7 @@ import { TMDBMovieGeneral } from '../../../data-model/cinematic/integration/movi
 export class CinematicCardComponent implements OnInit {
   constructor(
     private libraInitializer: LibraInitializer,
-    private movieClient: CinematicClientService,
+    private cinematicClient: CinematicClientService,
   ) {}
 
   @Input()
@@ -27,6 +27,6 @@ export class CinematicCardComponent implements OnInit {
   }
 
   addMovieItem(id: number) {
-    this.movieClient.addCinematic({ cinematic: CinematicType.MOVIE, id: id }).subscribe()
+    this.cinematicClient.addItem({ cinematic: CinematicType.MOVIE, id: id }).subscribe()
   }
 }

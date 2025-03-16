@@ -2,8 +2,9 @@ package hu.bozgab.cinematic.controller;
 
 import java.util.List;
 
-import hu.bozgab.cinematic.dto.CinematicRequest;
 import hu.bozgab.cinematic.dto.GenreDTO;
+import hu.bozgab.cinematic.dto.client.CinematicRequest;
+import hu.bozgab.cinematic.dto.client.GetCinematicResponse;
 import hu.bozgab.cinematic.service.CinematicService;
 import hu.bozgab.shared.client.dto.SimpleResponse;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +38,11 @@ public class CinematicManageController {
     public ResponseEntity<SimpleResponse> addCinematic(@RequestBody CinematicRequest request) {
         cinematicManagementService.addCinematic(request);
         return ResponseEntity.ok(SimpleResponse.builder().message("ok").build());
+    }
+
+    @GetMapping("/getCinematics")
+    public ResponseEntity<GetCinematicResponse> getCinematics() {
+        return ResponseEntity.ok(cinematicManagementService.getCinematics());
     }
 
 }

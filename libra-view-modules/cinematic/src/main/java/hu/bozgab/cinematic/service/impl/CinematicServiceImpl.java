@@ -2,12 +2,15 @@ package hu.bozgab.cinematic.service.impl;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import hu.bozgab.cinematic.domain.Cinematic;
 import hu.bozgab.cinematic.domain.Genre;
+import hu.bozgab.cinematic.domain.UserCinematic;
 import hu.bozgab.cinematic.dto.CinematicDTO;
-import hu.bozgab.cinematic.dto.CinematicRequest;
 import hu.bozgab.cinematic.dto.GenreDTO;
+import hu.bozgab.cinematic.dto.client.CinematicRequest;
+import hu.bozgab.cinematic.dto.client.GetCinematicResponse;
 import hu.bozgab.cinematic.dto.enums.CinematicType;
 import hu.bozgab.cinematic.dto.integration.genres.TMDBGenre;
 import hu.bozgab.cinematic.exception.CinematicNotFound;
@@ -18,13 +21,14 @@ import hu.bozgab.cinematic.mapper.TMDBMovieMapper;
 import hu.bozgab.cinematic.repository.CinematicRepository;
 import hu.bozgab.cinematic.repository.GenreRepository;
 import hu.bozgab.cinematic.repository.MovieRepository;
+import hu.bozgab.cinematic.repository.UserCinematicRepository;
 import hu.bozgab.cinematic.service.CinematicService;
 import hu.bozgab.cinematic.service.TMDBService;
-import hu.bozgab.shared.authentication.dto.LibraUserDTO;
 import hu.bozgab.shared.authentication.repository.LibraUserRepository;
 import hu.bozgab.shared.authentication.service.LibraUserContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 
@@ -37,6 +41,7 @@ public class CinematicServiceImpl implements CinematicService {
     private final LibraUserContext libraUserContext;
 
     private final CinematicRepository cinematicRepository;
+    private final UserCinematicRepository userCinematicRepository;
     private final MovieRepository movieRepository;
     private final GenreRepository genreRepository;
     private final LibraUserRepository libraUserRepository;
@@ -74,21 +79,18 @@ public class CinematicServiceImpl implements CinematicService {
             );
         }
         optCinematicDTO.ifPresentOrElse(cinematicDTO -> {
-                    LibraUserDTO userDTO = libraUserContext.getCurrentUser();
-                    Cinematic cinematic;
-                    if(cinematicDTO.getId() == null) {
-                        cinematic = cinematicRepository.save(cinematicMapper
+                    Long userId = libraUserContext.getCurrentUser().getId();
+                    Long cinematicId = cinematicDTO.getId();
+                    if(cinematicId == null) {
+                        cinematicId = cinematicRepository.save(cinematicMapper
                                 .toCinematicEntityForPersist(null, cinematicDTO)
-                        );
-                    } else {
-                        cinematic = cinematicRepository.findById(cinematicDTO.getId())
-                                .orElseThrow(CinematicNotFound::new);
+                        ).getId();
                     }
 
-                    cinematic.getUsers().add(
-                            libraUserRepository.findById(userDTO.getId()).orElseThrow(CinematicNotFound::new)
-                    );
-                    cinematicRepository.save(cinematic);
+                    if(!userCinematicRepository.existsByUserIdAndCinematicId(userId, cinematicId)) {
+                        UserCinematic userCinematic = cinematicMapper.createUserCinematicAssociationEntity(userId, cinematicId);
+                        userCinematicRepository.save(userCinematic);
+                    }
                 },
                 () -> {
                     throw new CinematicNotFound();
@@ -105,6 +107,18 @@ public class CinematicServiceImpl implements CinematicService {
         }
 
         return cinematic.map(cinematicMapper::toCinematicDTO);
+    }
+
+    @Override
+    public GetCinematicResponse getCinematics() {
+        List<UserCinematic> userCinematics = userCinematicRepository.findAllByUserId(libraUserContext.getCurrentUser().getId(), Pageable.ofSize(10));
+        return GetCinematicResponse.builder()
+                .cinematics(
+                        cinematicMapper.toCinematicDTOS(
+                                // explicit get forcing Hibernate to initialize entity
+                                userCinematics.stream().map(uC -> uC.getCinematic()).collect(Collectors.toList())
+                        )
+                ).build();
     }
 
 }
