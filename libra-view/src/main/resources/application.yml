@@ -14,8 +14,8 @@ spring:
   jpa:
     database: POSTGRESQL
     show-sql: true
-    hibernate:
-      ddl-auto: create-drop
+    properties:
+      hibernate.hibernate.format_sql: true
   datasource:
     url: jdbc:postgresql://localhost:5432/libra_view
     username: libra_admin
@@ -29,6 +29,12 @@ security:
   jwt:
     secret-key: # wich will be used by the JWT service
     expiration-time: # in ms
+##################### Logging
+logging:
+  level:
+    root: INFO
+    org.springframework.web: DEBUG
+    org.hibernate: ERROR
 ##################### TMDB
 tmdb:
   authentication:

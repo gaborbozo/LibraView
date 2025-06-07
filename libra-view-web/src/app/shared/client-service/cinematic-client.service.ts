@@ -2,13 +2,14 @@ import { HttpClient, HttpParams } from '@angular/common/http'
 import { Injectable } from '@angular/core'
 import { Observable, of } from 'rxjs'
 import { convertToStringParams } from '../../core/helper-functions/http-client.helper'
-import { SimpleResponse } from '../data-model/cinematic/empty.response'
-import { IdRequest } from '../data-model/cinematic/id.request'
 import { TMDBGetDetailsResponse } from '../data-model/cinematic/integration/configuration/tmdb-get-details.response'
 import { TMDBSearchMovieRequest } from '../data-model/cinematic/integration/search/tmdb-search-movie.request'
 import { TMDBSearchMovieResponse } from '../data-model/cinematic/integration/search/tmdb-search-movie.response'
 import { TMDBSearchRequest } from '../data-model/cinematic/integration/search/tmdb-search.request'
 import { TMDBSearchResponse } from '../data-model/cinematic/integration/search/tmdb-search.response'
+import { CinematicRequest } from '../data-model/cinematic/server/cinematic.request'
+import { GetCinematicResponse } from '../data-model/cinematic/server/get-cinematic.response'
+import { SimpleResponse } from '../data-model/common/simple.response'
 
 export type SearchResponseMapper<T extends TMDBSearchRequest> = T extends TMDBSearchMovieRequest
   ? TMDBSearchMovieResponse
@@ -33,10 +34,10 @@ export class CinematicClientService {
   }
 
   /*
-    Movie
+    Cinematic
   */
 
-  search<T extends TMDBSearchRequest>(request: T): Observable<SearchResponseMapper<T>> {
+  searchCinematics<T extends TMDBSearchRequest>(request: T): Observable<SearchResponseMapper<T>> {
     const params = new HttpParams({
       fromObject: convertToStringParams(request),
     })
@@ -48,7 +49,11 @@ export class CinematicClientService {
     return of({} as SearchResponseMapper<T>)
   }
 
-  addCinematic(request: IdRequest): Observable<SimpleResponse> {
+  addCinematic(request: CinematicRequest): Observable<SimpleResponse> {
     return this.http.post<SimpleResponse>(`${this.cinematicURL}/addCinematic`, request)
+  }
+
+  getCinematic(): Observable<GetCinematicResponse> {
+    return this.http.get<GetCinematicResponse>(`${this.cinematicURL}/getCinematics`)
   }
 }

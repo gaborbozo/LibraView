@@ -1,4 +1,4 @@
-import { TMDBMovieDetailsDTO } from '../movies/tmdb-movie-details.dto'
+import { TMDBMovieGeneral } from '../movies/tmdb-movie-general'
 import { TMDBSearchResponse } from './tmdb-search.response'
 
 export interface TMDBSearchMovieResponse extends TMDBSearchResponse {
@@ -6,7 +6,7 @@ export interface TMDBSearchMovieResponse extends TMDBSearchResponse {
 
   page: number
 
-  results: Array<TMDBMovieDetailsDTO>
+  results: Array<TMDBMovieGeneral>
 
   total_pages: number
 

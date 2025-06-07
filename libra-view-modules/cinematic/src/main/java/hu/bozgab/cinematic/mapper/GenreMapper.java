@@ -1,21 +1,21 @@
 package hu.bozgab.cinematic.mapper;
 
-import hu.bozgab.cinematic.domain.Genre;
-import hu.bozgab.cinematic.dto.GenreDTO;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
+import hu.bozgab.cinematic.domain.Genre;
+import hu.bozgab.cinematic.dto.GenreDTO;
+import org.mapstruct.Builder;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", builder = @Builder(disableBuilder = true))
 public abstract class GenreMapper {
 
     /*
-        DTO conversions
+        Entity conversions
      */
 
     @Mapping(target = "id", ignore = true)
@@ -35,6 +35,9 @@ public abstract class GenreMapper {
                 .collect(Collectors.toList());
     }
 
+    /*
+        DTO conversions
+     */
 
     public abstract GenreDTO toGenreDTO(Genre genreEntity);
 

@@ -1,17 +1,17 @@
 import { Component, OnInit } from '@angular/core'
 import { FormControl, FormGroup } from '@angular/forms'
 import { CinematicClientService } from '../../../shared/client-service/cinematic-client.service'
-import { TMDBMovieDetailsDTO } from '../../../shared/data-model/cinematic/integration/movies/tmdb-movie-details.dto'
+import { TMDBMovieGeneral } from '../../../shared/data-model/cinematic/integration/movies/tmdb-movie-general'
 import { TMDBSearchMovieRequest } from '../../../shared/data-model/cinematic/integration/search/tmdb-search-movie.request'
 
 @Component({
-  selector: 'app-search',
+  selector: 'app-cinematic-search',
   templateUrl: './search.component.html',
   styleUrl: './search.component.scss',
 })
-export class SearchComponent implements OnInit {
+export class CinematicSearchComponent implements OnInit {
   form!: FormGroup
-  items: TMDBMovieDetailsDTO[] = []
+  items: TMDBMovieGeneral[] = []
 
   constructor(private cinematicClient: CinematicClientService) {}
 
@@ -24,11 +24,11 @@ export class SearchComponent implements OnInit {
   onSubmit() {
     if (this.form.valid) {
       this.cinematicClient
-        .search({
+        .searchCinematics({
           discriminator: 'MOVIE',
           query: this.form.controls['name'].value,
         } as TMDBSearchMovieRequest)
-        .subscribe((data) => (this.items = data.results))
+        .subscribe((response) => (this.items = response.results))
     }
   }
 }

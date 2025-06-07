@@ -6,14 +6,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 
-@EntityScan(basePackages = {
-        "hu.bozgab.libra_view.authentication.domain"
-})
-@EnableJpaRepositories(basePackages = {
-        "hu.bozgab.libra_view.authentication.repository"
-})
+@EntityScan(basePackages = {})
+@EnableJpaRepositories(basePackages = {})
 @ComponentScan(basePackages = {
-        "hu.bozgab.libra_view.authentication.service", "hu.bozgab.libra_view.authentication.mapper", "hu.bozgab.libra_view.authentication.controller"
+        "hu.bozgab.shared.config",
+        "hu.bozgab.libra_view.authentication.service",
+        "hu.bozgab.libra_view.authentication.controller",
 })
 @Configuration
 public class LibraConfiguration {

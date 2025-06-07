@@ -1,6 +1,7 @@
 package hu.bozgab.cinematic.domain;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 import jakarta.persistence.Column;
@@ -57,11 +58,14 @@ public class Cinematic {
     @Column(name = "VOTE_COUNT")
     private Integer voteCount;
 
+    @Column(name = "POPULARITY")
+    private Double popularity;
+
     @ManyToMany
     @JoinTable(
             name = "CINEMATIC_GENRE",
             joinColumns = @JoinColumn(name = "CINEMATIC_ID"),
             inverseJoinColumns = @JoinColumn(name = "GENRE_ID"))
-    private Set<Genre> genres;
+    private Set<Genre> genres = new HashSet<>();
 
 }

@@ -1,8 +1,7 @@
 package hu.bozgab.libra_view.config;
 
-import hu.bozgab.libra_view.authentication.mapper.UserMapper;
-import hu.bozgab.libra_view.authentication.repository.LibraUserRepository;
-
+import hu.bozgab.shared.authentication.mapper.UserMapper;
+import hu.bozgab.shared.authentication.repository.LibraUserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;

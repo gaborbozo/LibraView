@@ -20,7 +20,7 @@ import lombok.ToString;
 @ToString(callSuper = true, exclude = {})
 public class TMDBGetDetailsResponse {
 
-    private TMDBImageDetailsDTO images;
+    private TMDBImageDetails images;
 
     @Builder.Default
     private List<String> change_keys = new ArrayList<>();

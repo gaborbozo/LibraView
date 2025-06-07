@@ -1,24 +1,28 @@
 package hu.bozgab.cinematic.mapper;
 
-import hu.bozgab.cinematic.domain.Cinematic;
-import hu.bozgab.cinematic.domain.Genre;
-import hu.bozgab.cinematic.domain.Movie;
-import hu.bozgab.cinematic.domain.Series;
-import hu.bozgab.cinematic.dto.CinematicDTO;
-import hu.bozgab.cinematic.dto.MovieDTO;
-import hu.bozgab.cinematic.dto.SeriesDTO;
-
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import hu.bozgab.cinematic.domain.Cinematic;
+import hu.bozgab.cinematic.domain.Genre;
+import hu.bozgab.cinematic.domain.Movie;
+import hu.bozgab.cinematic.domain.Series;
+import hu.bozgab.cinematic.domain.UserCinematic;
+import hu.bozgab.cinematic.dto.CinematicDTO;
+import hu.bozgab.cinematic.dto.MovieDTO;
+import hu.bozgab.cinematic.dto.SeriesDTO;
+import jakarta.transaction.Transactional;
+import org.mapstruct.BeanMapping;
+import org.mapstruct.Builder;
 import org.mapstruct.Context;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
 
-@Mapper(componentModel = "spring")
+@Transactional
+@Mapper(componentModel = "spring", builder = @Builder(disableBuilder = true))
 public abstract class CinematicMapper {
 
     /*
@@ -27,14 +31,10 @@ public abstract class CinematicMapper {
 
     public Cinematic toCinematicEntityForPersist(@MappingTarget Cinematic cinematicEntity, CinematicDTO cinematicDTO) {
         if(cinematicDTO instanceof MovieDTO m) {
-            if(cinematicEntity == null) {
-                cinematicEntity = new Movie();
-            }
+            cinematicEntity = cinematicEntity == null ? new Movie() : cinematicEntity;
             return toMovieEntityForPersist((Movie) cinematicEntity, m);
         } else if(cinematicDTO instanceof SeriesDTO s) {
-            if(cinematicEntity == null) {
-                cinematicEntity = new Series();
-            }
+            cinematicEntity = cinematicEntity == null ? new Series() : cinematicEntity;
             return toSeriesEntityForPersist((Series) cinematicEntity, s);
         } else {
             throw new RuntimeException("Unsupported cinematic type for id " + cinematicDTO.getId());
@@ -42,24 +42,15 @@ public abstract class CinematicMapper {
     }
 
     @Mapping(target = "id", ignore = true)
-    protected abstract Movie toMovieEntityForPersist(@MappingTarget Movie movieEntity, CinematicDTO cinematicDTO);
+    protected abstract Movie toMovieEntityForPersist(@MappingTarget Movie movieEntity, MovieDTO movieDTO);
 
     @Mapping(target = "id", ignore = true)
-    protected abstract Series toSeriesEntityForPersist(@MappingTarget Series seriesEntity, CinematicDTO cinematicDTO);
+    protected abstract Series toSeriesEntityForPersist(@MappingTarget Series seriesEntity, SeriesDTO seriesDTO);
 
-    public List<Cinematic> toCinematicEntitiesForPersist(@MappingTarget List<Cinematic> cinematicEntities, List<CinematicDTO> cinematicDTOS) {
-        return cinematicDTOS.stream()
-                .map(dto -> toCinematicEntityForPersist(cinematicEntities.stream()
-                        .filter(entity -> dto.getId().equals(entity.getId()))
-                        .findFirst()
-                        .orElseGet(() -> {
-                            Cinematic cinematic = new Cinematic();
-                            cinematicEntities.add(cinematic);
-                            return cinematic;
-                        }), dto)
-                )
-                .collect(Collectors.toList());
-    }
+    @BeanMapping(ignoreByDefault = true)
+    @Mapping(target = "userId", expression = "java(userId)")
+    @Mapping(target = "cinematicId", expression = "java(cinematicId)")
+    public abstract UserCinematic createUserCinematicAssociationEntity(Long userId, Long cinematicId);
 
     /*
         DTO conversions

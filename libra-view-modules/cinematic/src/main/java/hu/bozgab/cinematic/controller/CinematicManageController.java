@@ -1,12 +1,12 @@
 package hu.bozgab.cinematic.controller;
 
-import hu.bozgab.cinematic.dto.GenreDTO;
-import hu.bozgab.cinematic.dto.IdRequest;
-import hu.bozgab.cinematic.dto.SimpleResponse;
-import hu.bozgab.cinematic.service.CinematicService;
-
 import java.util.List;
 
+import hu.bozgab.cinematic.dto.GenreDTO;
+import hu.bozgab.cinematic.dto.client.CinematicRequest;
+import hu.bozgab.cinematic.dto.client.GetCinematicResponse;
+import hu.bozgab.cinematic.service.CinematicService;
+import hu.bozgab.shared.client.dto.SimpleResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,9 +35,14 @@ public class CinematicManageController {
     }
 
     @PostMapping("/addCinematic")
-    public ResponseEntity<SimpleResponse> addCinematic(@RequestBody IdRequest request) {
+    public ResponseEntity<SimpleResponse> addCinematic(@RequestBody CinematicRequest request) {
         cinematicManagementService.addCinematic(request);
         return ResponseEntity.ok(SimpleResponse.builder().message("ok").build());
+    }
+
+    @GetMapping("/getCinematics")
+    public ResponseEntity<GetCinematicResponse> getCinematics() {
+        return ResponseEntity.ok(cinematicManagementService.getCinematics());
     }
 
 }
