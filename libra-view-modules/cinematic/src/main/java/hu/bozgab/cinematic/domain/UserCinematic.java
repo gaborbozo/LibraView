@@ -2,7 +2,6 @@ package hu.bozgab.cinematic.domain;
 
 import java.sql.Timestamp;
 
-import hu.bozgab.shared.authentication.domain.LibraUser;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,11 +10,15 @@ import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MapsId;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 
 @Getter
@@ -23,6 +26,8 @@ import lombok.Setter;
 @Entity
 @Table(name = "USER_CINEMATIC")
 @IdClass(UserCinematicId.class)
+@EqualsAndHashCode(exclude = { "user", "cinematic", "userCinematicGroup" })
+@ToString(exclude = { "user", "cinematic", "userCinematicGroup" })
 public class UserCinematic {
 
     @Id
@@ -32,7 +37,7 @@ public class UserCinematic {
     @Id
     @Column(name = "CINEMATIC_ID")
     private Long cinematicId;
-    
+
     @Column(name = "INDEX")
     private Double index;
 
@@ -46,12 +51,9 @@ public class UserCinematic {
     @Column(name = "COMMENT")
     private String comment;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "USER_ID", insertable = false, updatable = false)
-    private LibraUser user;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "CINEMATIC_ID", insertable = false, updatable = false)
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "CINEMATIC_ID")
+    @MapsId
     private Cinematic cinematic;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH })

@@ -26,12 +26,14 @@ import hu.bozgab.cinematic.service.CinematicService;
 import hu.bozgab.cinematic.service.TMDBService;
 import hu.bozgab.shared.authentication.repository.LibraUserRepository;
 import hu.bozgab.shared.authentication.service.LibraUserContext;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 
+@Transactional
 @Log4j2
 @RequiredArgsConstructor
 @Service
@@ -115,8 +117,7 @@ public class CinematicServiceImpl implements CinematicService {
         return GetCinematicResponse.builder()
                 .cinematics(
                         cinematicMapper.toCinematicDTOS(
-                                // explicit get forcing Hibernate to initialize entity
-                                userCinematics.stream().map(uC -> uC.getCinematic()).collect(Collectors.toList())
+                                userCinematics.stream().map(UserCinematic::getCinematic).collect(Collectors.toList())
                         )
                 ).build();
     }

@@ -1,1 +1,7 @@
-<p>library works!</p>
+<div class="flex-row flex-wrap gap-16">
+  <app-cinematic-card
+    *ngFor="let item of items"
+    [item]="item"
+    [dataType]="'CINEMATIC'"
+  ></app-cinematic-card>
+</div>

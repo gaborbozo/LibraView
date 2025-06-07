@@ -11,6 +11,7 @@ import { provideServerRendering } from '@angular/platform-server'
 import { provideRouter, Routes } from '@angular/router'
 import { ApiInterceptor } from './core/interceptors/api.interceptor'
 import { AuthInterceptor } from './core/interceptors/auth.interceptor'
+import { ResponseInterceptor } from './core/interceptors/response.interceptor'
 import { LibraAuthenticationGuard } from './core/services/libra-authentication-guard'
 import { LibraInitializer } from './core/services/libra-initializer.service'
 import { HomeComponent } from './features/home/home.component'
@@ -61,6 +62,11 @@ export const appConfig: ApplicationConfig = {
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ResponseInterceptor,
       multi: true,
     },
     /*

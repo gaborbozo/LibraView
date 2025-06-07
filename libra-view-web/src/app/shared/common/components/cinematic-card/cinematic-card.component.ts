@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core'
 import { LibraInitializer } from '../../../../core/services/libra-initializer.service'
 import { CinematicClientService } from '../../../client-service/cinematic-client.service'
+import { Cinematic } from '../../../data-model/cinematic/cinematic'
 import { CinematicType } from '../../../data-model/cinematic/enums/cinematic-type'
 import { TMDBMovieGeneral } from '../../../data-model/cinematic/integration/movies/tmdb-movie-general'
 
@@ -15,8 +16,9 @@ export class CinematicCardComponent implements OnInit {
     private cinematicClient: CinematicClientService,
   ) {}
 
+  @Input() dataType!: 'TMDB_GENERAL' | 'CINEMATIC'
   @Input()
-  item!: TMDBMovieGeneral
+  item!: TMDBMovieGeneral | Cinematic
 
   imageBaseUrl?: string
 
@@ -27,6 +29,14 @@ export class CinematicCardComponent implements OnInit {
   }
 
   addMovieItem(id: number) {
-    this.cinematicClient.addItem({ cinematic: CinematicType.MOVIE, id: id }).subscribe()
+    this.cinematicClient.addCinematic({ cinematic: CinematicType.MOVIE, id: id }).subscribe()
+  }
+
+  cardDefinedWithTMDBGeneral(item: TMDBMovieGeneral | Cinematic): item is TMDBMovieGeneral {
+    return this.dataType === 'TMDB_GENERAL'
+  }
+
+  cardDefinedWithCinematic(item: TMDBMovieGeneral | Cinematic): item is Cinematic {
+    return this.dataType === 'CINEMATIC'
   }
 }

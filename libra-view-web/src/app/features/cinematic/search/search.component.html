@@ -7,5 +7,9 @@
   </div>
 </form>
 <div class="flex-row flex-wrap gap-16">
-  <app-cinematic-card *ngFor="let item of items" [item]="item"></app-cinematic-card>
+  <app-cinematic-card
+    *ngFor="let item of items"
+    [item]="item"
+    [dataType]="'TMDB_GENERAL'"
+  ></app-cinematic-card>
 </div>

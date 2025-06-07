@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core'
 import { CinematicClientService } from '../../../shared/client-service/cinematic-client.service'
+import { Cinematic } from '../../../shared/data-model/cinematic/cinematic'
 
 @Component({
   selector: 'app-cinematic-library',
@@ -7,9 +8,13 @@ import { CinematicClientService } from '../../../shared/client-service/cinematic
   styleUrl: './library.component.scss',
 })
 export class CinematicLibraryComponent implements OnInit {
+  items: Cinematic[] = []
+
   constructor(private cinematicClient: CinematicClientService) {}
 
   ngOnInit(): void {
-    this.cinematicClient.getItems().subscribe()
+    this.cinematicClient.getCinematic().subscribe((response) => {
+      this.items = response.cinematics
+    })
   }
 }

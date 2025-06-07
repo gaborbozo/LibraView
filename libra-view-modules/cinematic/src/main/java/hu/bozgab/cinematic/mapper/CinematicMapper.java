@@ -12,6 +12,7 @@ import hu.bozgab.cinematic.domain.UserCinematic;
 import hu.bozgab.cinematic.dto.CinematicDTO;
 import hu.bozgab.cinematic.dto.MovieDTO;
 import hu.bozgab.cinematic.dto.SeriesDTO;
+import jakarta.transaction.Transactional;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Builder;
 import org.mapstruct.Context;
@@ -20,6 +21,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
 
+@Transactional
 @Mapper(componentModel = "spring", builder = @Builder(disableBuilder = true))
 public abstract class CinematicMapper {
 

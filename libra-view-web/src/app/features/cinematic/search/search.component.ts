@@ -24,11 +24,11 @@ export class CinematicSearchComponent implements OnInit {
   onSubmit() {
     if (this.form.valid) {
       this.cinematicClient
-        .search({
+        .searchCinematics({
           discriminator: 'MOVIE',
           query: this.form.controls['name'].value,
         } as TMDBSearchMovieRequest)
-        .subscribe((data) => (this.items = data.results))
+        .subscribe((response) => (this.items = response.results))
     }
   }
 }

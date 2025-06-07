@@ -37,7 +37,7 @@ export class CinematicClientService {
     Cinematic
   */
 
-  search<T extends TMDBSearchRequest>(request: T): Observable<SearchResponseMapper<T>> {
+  searchCinematics<T extends TMDBSearchRequest>(request: T): Observable<SearchResponseMapper<T>> {
     const params = new HttpParams({
       fromObject: convertToStringParams(request),
     })
@@ -49,11 +49,11 @@ export class CinematicClientService {
     return of({} as SearchResponseMapper<T>)
   }
 
-  add(request: CinematicRequest): Observable<SimpleResponse> {
+  addCinematic(request: CinematicRequest): Observable<SimpleResponse> {
     return this.http.post<SimpleResponse>(`${this.cinematicURL}/addCinematic`, request)
   }
 
-  getMultiple(): Observable<GetCinematicResponse> {
+  getCinematic(): Observable<GetCinematicResponse> {
     return this.http.get<GetCinematicResponse>(`${this.cinematicURL}/getCinematics`)
   }
 }
