@@ -1,3 +1,7 @@
+# Custom configs
+application-dev.yaml
+application-dev.yml
+
 # Compiled class file
 *.class
 
