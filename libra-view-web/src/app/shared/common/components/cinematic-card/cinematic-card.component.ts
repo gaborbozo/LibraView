@@ -6,9 +6,10 @@ import { CinematicType } from '../../../data-model/cinematic/enums/cinematic-typ
 import { TMDBMovieGeneral } from '../../../data-model/cinematic/integration/movies/tmdb-movie-general'
 
 @Component({
-  selector: 'app-cinematic-card',
-  templateUrl: './cinematic-card.component.html',
-  styleUrl: './cinematic-card.component.scss',
+    selector: 'app-cinematic-card',
+    templateUrl: './cinematic-card.component.html',
+    styleUrl: './cinematic-card.component.scss',
+    standalone: false
 })
 export class CinematicCardComponent implements OnInit {
   constructor(

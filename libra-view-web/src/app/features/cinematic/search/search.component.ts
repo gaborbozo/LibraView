@@ -5,9 +5,10 @@ import { TMDBMovieGeneral } from '../../../shared/data-model/cinematic/integrati
 import { TMDBSearchMovieRequest } from '../../../shared/data-model/cinematic/integration/search/tmdb-search-movie.request'
 
 @Component({
-  selector: 'app-cinematic-search',
-  templateUrl: './search.component.html',
-  styleUrl: './search.component.scss',
+    selector: 'app-cinematic-search',
+    templateUrl: './search.component.html',
+    styleUrl: './search.component.scss',
+    standalone: false
 })
 export class CinematicSearchComponent implements OnInit {
   form!: FormGroup

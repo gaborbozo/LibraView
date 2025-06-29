@@ -3,9 +3,10 @@ import { CinematicClientService } from '../../../shared/client-service/cinematic
 import { Cinematic } from '../../../shared/data-model/cinematic/cinematic'
 
 @Component({
-  selector: 'app-cinematic-library',
-  templateUrl: './library.component.html',
-  styleUrl: './library.component.scss',
+    selector: 'app-cinematic-library',
+    templateUrl: './library.component.html',
+    styleUrl: './library.component.scss',
+    standalone: false
 })
 export class CinematicLibraryComponent implements OnInit {
   items: Cinematic[] = []

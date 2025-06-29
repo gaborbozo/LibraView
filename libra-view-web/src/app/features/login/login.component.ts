@@ -5,11 +5,10 @@ import { LibraCommonModule } from '../../shared/common/libra-common.module'
 import { SharedModule } from '../../shared/shared.module'
 
 @Component({
-  selector: 'app-login',
-  standalone: true,
-  imports: [SharedModule, LibraCommonModule],
-  templateUrl: './login.component.html',
-  styleUrl: './login.component.scss',
+    selector: 'app-login',
+    imports: [SharedModule, LibraCommonModule],
+    templateUrl: './login.component.html',
+    styleUrl: './login.component.scss'
 })
 export class LoginComponent {
   form: FormGroup

@@ -2,7 +2,8 @@ import { Directive, HostListener, Input } from '@angular/core'
 import { MatDrawer } from '@angular/material/sidenav'
 
 @Directive({
-  selector: '[toggleDrawer]',
+    selector: '[toggleDrawer]',
+    standalone: false
 })
 export class ToggleDrawerDirective {
   @Input('toggleDrawer') drawer!: MatDrawer
