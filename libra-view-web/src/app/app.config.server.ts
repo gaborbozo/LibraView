@@ -1,3 +1,4 @@
+import { provideServerRendering } from '@angular/ssr';
 import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 import {
   APP_INITIALIZER,
@@ -7,7 +8,6 @@ import {
 } from '@angular/core'
 import { provideClientHydration } from '@angular/platform-browser'
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async'
-import { provideServerRendering } from '@angular/platform-server'
 import { provideRouter, Routes } from '@angular/router'
 import { ApiInterceptor } from './core/interceptors/api.interceptor'
 import { AuthInterceptor } from './core/interceptors/auth.interceptor'
