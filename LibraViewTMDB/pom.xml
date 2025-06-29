@@ -30,9 +30,11 @@
         <java.version>21</java.version>
     </properties>
     <dependencies>
+        <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-webflux -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <artifactId>spring-boot-starter-webflux</artifactId>
+            <version>3.5.3</version>
         </dependency>
 
         <dependency>
@@ -53,6 +55,17 @@
             <groupId>javax.annotation</groupId>
             <artifactId>javax.annotation-api</artifactId>
             <version>1.3.2</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>1.1.0.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.0.1</version>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
@@ -94,22 +107,64 @@
                 <version>7.12.0</version>
                 <executions>
                     <execution>
+                        <id>tmdb-api-generator</id>
                         <goals>
                             <goal>generate</goal>
                         </goals>
                         <configuration>
                             <generatorName>java</generatorName>
                             <library>resttemplate</library>
-                            <!--                            <inputSpec>${project.basedir}/src/main/resources/tmdb_api.yaml</inputSpec>-->
-                            <inputSpec>${project.basedir}/../LibraViewContract/tmdb/openapi_source.yaml</inputSpec>
-                            <output>${project.build.directory}/generated-sources</output>
+
+                            <inputSpec>${project.basedir}/../LibraViewContract/tmdb/openapi_source.json</inputSpec>
+                            <output>${project.build.directory}/generated-sources/tmdb</output>
                             <cleanupOutput>true</cleanupOutput>
-                            <nameMappings>
-                                <nameMapping>_id=underScoreId</nameMapping>
-                            </nameMappings>
+
+                            <apiPackage>hu.bozgab.tmdb.generated.api</apiPackage>
+                            <modelPackage>hu.bozgab.tmdb.generated.model</modelPackage>
+                            <invokerPackage>hu.bozgab.tmdb.generated.client</invokerPackage>
+
                             <configOptions>
                                 <sourceFolder>src/gen/java/main</sourceFolder>
                                 <openApiNullable>false</openApiNullable>
+                            </configOptions>
+
+                            <nameMappings>
+                                <nameMapping>_id=underScoreId</nameMapping>
+                            </nameMappings>
+
+                            <generateApiDocumentation>false</generateApiDocumentation>
+                            <generateApiTests>false</generateApiTests>
+                            <generateModelTests>false</generateModelTests>
+                            <generateModelDocumentation>false</generateModelDocumentation>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>libra-view-tmdb-api-generator</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <generatorName>spring</generatorName>
+                            <library>spring-boot</library>
+
+                            <inputSpec>
+                                ${project.basedir}/../LibraViewContract/libra-view/libra_view_tmdb.api.yaml
+                            </inputSpec>
+                            <output>${project.build.directory}/generated-sources/libra-view-tmdb</output>
+                            <cleanupOutput>true</cleanupOutput>
+
+                            <apiPackage>hu.bozgab.LibraViewTMDB.generated.api</apiPackage>
+                            <modelPackage>hu.bozgab.LibraViewTMDB.generated.model</modelPackage>
+                            <invokerPackage>hu.bozgab.LibraViewTMDB.generated.client</invokerPackage>
+
+                            <configOptions>
+                                <sourceFolder>src/gen/java/main</sourceFolder>
+                                <openApiNullable>false</openApiNullable>
+                                <useResponseEntity>false</useResponseEntity>
+                                <serializableModel>true</serializableModel>
+                                <interfaceOnly>true</interfaceOnly>
+                                <reactive>true</reactive>
+                                <useSpringBoot3>true</useSpringBoot3>
                             </configOptions>
 
                             <generateApiDocumentation>false</generateApiDocumentation>

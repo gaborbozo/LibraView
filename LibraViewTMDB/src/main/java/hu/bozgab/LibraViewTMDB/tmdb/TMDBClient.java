@@ -1,7 +1,8 @@
 package hu.bozgab.LibraViewTMDB.tmdb;
 
-import org.openapitools.client.ApiClient;
-import org.openapitools.client.api.DefaultApi;
+
+import hu.bozgab.tmdb.generated.api.DefaultApi;
+import hu.bozgab.tmdb.generated.client.ApiClient;
 import org.springframework.stereotype.Component;
 
 

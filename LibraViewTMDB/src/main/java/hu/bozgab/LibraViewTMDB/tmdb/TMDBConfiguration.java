@@ -3,8 +3,8 @@ package hu.bozgab.LibraViewTMDB.tmdb;
 import java.util.List;
 
 import hu.bozgab.LibraViewTMDB.tmdb.exception.TMDBAPIKeyNotSetException;
+import hu.bozgab.tmdb.generated.client.ApiClient;
 import lombok.NonNull;
-import org.openapitools.client.ApiClient;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,7 +19,7 @@ import org.springframework.web.client.RestTemplate;
 @Configuration
 public class TMDBConfiguration {
 
-    @Value("${tmdb.authentication.token}")
+    @Value("${app.tmdb.authentication.token}")
     private String token;
 
     @Bean

@@ -1,3 +1,9 @@
-tmdb:
-  authentication:
-    token: # TMDB access token
+server:
+  port: 8081
+app:
+  tmdb:
+    authentication:
+      token: # TMDB access token
+  client:
+    http:
+      address:
