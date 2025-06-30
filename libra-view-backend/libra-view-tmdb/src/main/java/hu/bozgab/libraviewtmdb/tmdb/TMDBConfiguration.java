@@ -1,8 +1,8 @@
-package hu.bozgab.LibraViewTMDB.tmdb;
+package hu.bozgab.libraviewtmdb.tmdb;
 
 import java.util.List;
 
-import hu.bozgab.LibraViewTMDB.tmdb.exception.TMDBAPIKeyNotSetException;
+import hu.bozgab.libraviewtmdb.tmdb.exception.TMDBAPIKeyNotSetException;
 import hu.bozgab.tmdb.generated.client.ApiClient;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Value;

@@ -1,12 +1,12 @@
-package hu.bozgab.LibraViewTMDB.controllers;
+package hu.bozgab.libraviewtmdb.controllers;
 
 import java.time.Duration;
 import java.util.List;
 import java.util.Objects;
 
-import hu.bozgab.LibraViewTMDB.generated.api.MovieApi;
-import hu.bozgab.LibraViewTMDB.generated.model.CinematicDTO;
-import hu.bozgab.LibraViewTMDB.tmdb.TMDBClient;
+import hu.bozgab.libraviewtmdb.generated.api.MovieApi;
+import hu.bozgab.libraviewtmdb.generated.model.CinematicDTO;
+import hu.bozgab.libraviewtmdb.tmdb.TMDBClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

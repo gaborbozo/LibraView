@@ -1,4 +1,4 @@
-package hu.bozgab.LibraViewTMDB;
+package hu.bozgab.libraviewtmdb;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

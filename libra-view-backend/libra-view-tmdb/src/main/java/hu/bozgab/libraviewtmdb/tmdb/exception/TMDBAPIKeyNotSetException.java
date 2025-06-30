@@ -1,4 +1,4 @@
-package hu.bozgab.LibraViewTMDB.tmdb.exception;
+package hu.bozgab.libraviewtmdb.tmdb.exception;
 
 public class TMDBAPIKeyNotSetException extends RuntimeException {
 

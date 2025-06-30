@@ -1,4 +1,4 @@
-package hu.bozgab.LibraViewTMDB.tmdb;
+package hu.bozgab.libraviewtmdb.tmdb;
 
 
 import hu.bozgab.tmdb.generated.api.DefaultApi;

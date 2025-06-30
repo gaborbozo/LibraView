@@ -1,4 +1,4 @@
-package hu.bozgab.LibraViewTMDB.configuration;
+package hu.bozgab.libraviewtmdb.configuration;
 
 import io.swagger.models.HttpMethod;
 import org.springframework.beans.factory.annotation.Value;
