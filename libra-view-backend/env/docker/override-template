@@ -1,0 +1,17 @@
+services:
+  keycloak:
+    environment:
+      KC_DB_USERNAME:
+      KC_DB_PASSWORD:
+
+      KEYCLOAK_ADMIN:
+      KEYCLOAK_ADMIN_PASSWORD:
+    ports:
+      - :8080
+
+  keycloakdb:
+    environment:
+      POSTGRES_USER:
+      POSTGRES_PASSWORD:
+    ports:
+      - :5432

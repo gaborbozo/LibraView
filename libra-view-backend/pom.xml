@@ -17,6 +17,7 @@
     <description>Parent POM for LibraView applications</description>
 
     <modules>
+        <module>libra-common</module>
         <module>libra-view-tmdb</module>
     </modules>
 

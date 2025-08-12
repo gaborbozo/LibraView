@@ -24,6 +24,12 @@
     </scm>
 
     <dependencies>
+        <dependency>
+            <groupId>hu.bozgab</groupId>
+            <artifactId>LibraCommon</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
         <!-- parent defined -->
        <dependency>
             <groupId>org.springframework.boot</groupId>
