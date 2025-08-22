@@ -34,7 +34,12 @@
     <properties>
         <java.version>21</java.version>
 
+        <!--  Keeping this version for postgres version 16 (bug)  -->
+        <!--  https://github.com/flyway/flyway/issues/3807  -->
+        <flyway.version>10.0.1</flyway.version>
+
         <libra.view.lombok.version>1.18.38</libra.view.lombok.version>
+        <mapstruct.version>1.5.5.Final</mapstruct.version>
 
         <libra.view.spring.test.version>3.5.0</libra.view.spring.test.version>
     </properties>
@@ -48,6 +53,71 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-webflux</artifactId>
                 <version>3.5.3</version>
+            </dependency>
+
+            <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-r2dbc -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-data-r2dbc</artifactId>
+                <version>3.5.3</version>
+            </dependency>
+
+            <!--            &lt;!&ndash; https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-jpa &ndash;&gt;-->
+            <!--            <dependency>-->
+            <!--                <groupId>org.springframework.boot</groupId>-->
+            <!--                <artifactId>spring-boot-starter-data-jpa</artifactId>-->
+            <!--                <version>3.5.3</version>-->
+            <!--            </dependency>-->
+
+            <!-- r2dbc -->
+
+
+            <!-- postgresql -->
+
+            <!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
+            <dependency>
+                <groupId>org.postgresql</groupId>
+                <artifactId>postgresql</artifactId>
+                <version>42.7.7</version>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/org.postgresql/r2dbc-postgresql -->
+            <dependency>
+                <groupId>org.postgresql</groupId>
+                <artifactId>r2dbc-postgresql</artifactId>
+                <version>1.0.7.RELEASE</version>
+            </dependency>
+
+            <!-- flyway -->
+
+            <!--  https://mvnrepository.com/artifact/org.flywaydb/flyway-core  -->
+            <dependency>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-core</artifactId>
+                <!--  Not necessary but keep it here  -->
+                <version>${flyway.version}</version>
+            </dependency>
+            <!--  https://mvnrepository.com/artifact/org.flywaydb/flyway-database-postgresql  -->
+            <dependency>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-database-postgresql</artifactId>
+                <version>${flyway.version}</version>
+                <scope>runtime</scope>
+            </dependency>
+
+            <!-- mapstruct -->
+
+            <!--  https://mvnrepository.com/artifact/org.mapstruct/mapstruct  -->
+            <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct</artifactId>
+                <version>${mapstruct.version}</version>
+            </dependency>
+            <!--  https://mvnrepository.com/artifact/org.mapstruct/mapstruct-processor  -->
+            <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct-processor</artifactId>
+                <version>${mapstruct.version}</version>
+                <scope>provided</scope>
             </dependency>
 
             <!-- lombok -->
@@ -88,9 +158,7 @@
                 <scope>provided</scope>
             </dependency>
 
-            <!-- TEST -->
-
-            <!-- spring -->
+            <!-- TEST spring -->
 
             <dependency>
                 <groupId>org.springframework.boot</groupId>

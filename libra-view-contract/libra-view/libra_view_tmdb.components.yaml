@@ -1,5 +1,9 @@
 components:
   schemas:
+    CinematicType:
+      type: string
+      enum: [MOVIE, SERIES]
+
     GenreDTO:
       type: object
       required:
@@ -15,13 +19,16 @@ components:
           format: int64
         name:
           type: string
-    BaseCinematicDTO:
+    CinematicDTO:
       type: object
       required:
+        - discriminator
         - id
         - tmdbId
         - title
       properties:
+        discriminator:
+          type: string
         id:
           type: integer
           format: int64
@@ -53,38 +60,14 @@ components:
           items:
             type: integer
             format: int64
-    MovieDTO:
-      allOf:
-        - $ref: "#/components/schemas/BaseCinematicDTO"
-        - type: object
-          required:
-            - discriminator
-          properties:
-            discriminator:
-              type: string
-              example: movie
-    SeriesDTO:
-      allOf:
-        - $ref: "#/components/schemas/BaseCinematicDTO"
-        - type: object
-          required:
-            - discriminator
-          properties:
-            discriminator:
-              type: string
-              example: series
-    CinematicDTO:
-      type: object
-      required:
-        - discriminator
-      properties:
-         discriminator:
-           type: string
       discriminator:
         propertyName: discriminator
         mapping:
           movie: '#/components/schemas/MovieDTO'
           series: '#/components/schemas/SeriesDTO'
-      anyOf:
-        - $ref: '#/components/schemas/MovieDTO'
-        - $ref: '#/components/schemas/SeriesDTO'
+    MovieDTO:
+      allOf:
+        - $ref: "#/components/schemas/CinematicDTO"
+    SeriesDTO:
+      allOf:
+        - $ref: "#/components/schemas/CinematicDTO"

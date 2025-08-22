@@ -23,6 +23,10 @@
         <url/>
     </scm>
 
+    <properties>
+        <flyway-config-path>src/main/resources/application.properties</flyway-config-path>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>hu.bozgab</groupId>
@@ -31,9 +35,39 @@
         </dependency>
 
         <!-- parent defined -->
-       <dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-webflux</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-r2dbc</artifactId>
+        </dependency>
+        <!-- For now Flyway only supports JDBC -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>r2dbc-postgresql</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-database-postgresql</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct-processor</artifactId>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -74,6 +108,10 @@
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
                         </path>
+                        <path>
+                            <groupId>org.mapstruct</groupId>
+                            <artifactId>mapstruct-processor</artifactId>
+                        </path>
                     </annotationProcessorPaths>
                 </configuration>
             </plugin>
@@ -90,6 +128,25 @@
                 </configuration>
             </plugin>
             <plugin>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-maven-plugin</artifactId>
+                <!--  Not necessary but keep it here  -->
+                <version>${flyway.version}</version>
+                <configuration>
+                    <configFiles>
+                        <configFile>${flyway-config-path}</configFile>
+                    </configFiles>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>migrate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>org.openapitools</groupId>
                 <artifactId>openapi-generator-maven-plugin</artifactId>
                 <executions>
@@ -102,7 +159,7 @@
                             <generatorName>java</generatorName>
                             <library>resttemplate</library>
 
-                            <inputSpec>${project.basedir}/../../LibraViewContract/tmdb/openapi_source.json</inputSpec>
+                            <inputSpec>${project.basedir}/../../libra-view-contract/tmdb/openapi_source.json</inputSpec>
                             <output>${project.build.directory}/generated-sources/tmdb</output>
                             <cleanupOutput>true</cleanupOutput>
 
@@ -135,7 +192,7 @@
                             <library>spring-boot</library>
 
                             <inputSpec>
-                                ${project.basedir}/../../LibraViewContract/libra-view/libra_view_tmdb.api.yaml
+                                ${project.basedir}/../../libra-view-contract/libra-view/libra_view_tmdb.api.yaml
                             </inputSpec>
                             <output>${project.build.directory}/generated-sources/libra-view-tmdb</output>
                             <cleanupOutput>true</cleanupOutput>
@@ -154,6 +211,7 @@
                                 <useSpringBoot3>true</useSpringBoot3>
                             </configOptions>
 
+                            <openapiNormalizer>REF_AS_PARENT_IN_ALLOF=true</openapiNormalizer>
                             <generateApiDocumentation>false</generateApiDocumentation>
                             <generateApiTests>false</generateApiTests>
                             <generateModelTests>false</generateModelTests>

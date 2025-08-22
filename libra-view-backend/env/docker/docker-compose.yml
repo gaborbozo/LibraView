@@ -6,7 +6,7 @@ services:
     container_name: keycloak
     environment:
       KC_DB: postgres
-      KC_DB_URL: jdbc:postgresql://keycloakdb:5432/keycloak
+      KC_DB_URL: jdbc:postgresql://keycloak_db:5432/keycloak
       KC_DB_USERNAME: keycloak
       KC_DB_PASSWORD: Admin123
 
@@ -22,11 +22,11 @@ services:
       KEYCLOAK_ADMIN_PASSWORD: admin
     command: start-dev
     depends_on:
-      - keycloakdb
+      - keycloak_db
     ports:
       - 42050:8080
 
-  keycloakdb:
+  keycloak_db:
     image: postgres:15
     volumes:
       - postgres_data:/var/lib/postgresql/data
@@ -36,5 +36,14 @@ services:
       POSTGRES_PASSWORD: Admin123
     ports:
       - 42000:5432
+
+  libra_view_tmdb:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: libra_view_tmdb
+      POSTGRES_USER: libra
+      POSTGRES_PASSWORD: Admin123
+    ports:
+      - 42001:5432
 volumes:
   postgres_data:
