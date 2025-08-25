@@ -1,0 +1,83 @@
+openapi: 3.0.3
+info:
+  title: LibraViewCineRegistry API
+  version: 0.0.1
+servers:
+  - url: http://localhost:8081
+paths:
+  /genre/page:
+    get:
+      summary: Genre page
+      operationId: getGenrePage
+      responses:
+        "200":
+          description: OK
+          content:
+            text/event-stream:
+              schema:
+                type: array
+                items:
+                  $ref: "./libra_view_cine_registry.components.yaml#/components/schemas/GenreDTO"
+  /cinematic/{referenceId}:
+    get:
+      summary: get Cinematic
+      operationId: getCinematic
+      parameters:
+        - in: path
+          name: referenceId
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - in: query
+          name: type
+          required: true
+          schema:
+            $ref: "./libra_view_cine_registry.components.yaml#/components/schemas/CinematicType"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                  $ref: "./libra_view_cine_registry.components.yaml#/components/schemas/CinematicDTO"
+    post:
+      summary: Store cinematic
+      operationId: storeCinematic
+      parameters:
+        - in: path
+          name: referenceId
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - in: query
+          name: type
+          required: true
+          schema:
+            $ref: "./libra_view_cine_registry.components.yaml#/components/schemas/CinematicType"
+      responses:
+        "201":
+          description: "Created"
+  /movie/details:
+    get:
+      summary: Returns detailed data for specified movies
+      operationId: getMovieDetails
+      parameters:
+        - name: referenceIds
+          in: query
+          required: true
+          schema:
+            type: array
+            items:
+              type: integer
+              format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            text/event-stream:
+              schema:
+                type: array
+                items:
+                  $ref: "./libra_view_cine_registry.components.yaml#/components/schemas/CinematicDTO"

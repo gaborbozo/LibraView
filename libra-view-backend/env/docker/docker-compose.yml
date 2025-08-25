@@ -36,14 +36,21 @@ services:
       POSTGRES_PASSWORD: Admin123
     ports:
       - 42000:5432
-
-  libra_view_tmdb:
+  libra_view_master:
     image: postgres:15
     environment:
-      POSTGRES_DB: libra_view_tmdb
+      POSTGRES_DB: libra_view_master
       POSTGRES_USER: libra
       POSTGRES_PASSWORD: Admin123
     ports:
       - 42001:5432
+  libra_view_cine_registry:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: libra_view_cine_registry
+      POSTGRES_USER: libra
+      POSTGRES_PASSWORD: Admin123
+    ports:
+      - 42002:5432
 volumes:
   postgres_data:

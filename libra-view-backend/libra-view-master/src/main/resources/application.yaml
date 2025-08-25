@@ -1,0 +1,16 @@
+server:
+  port: 8082
+
+spring:
+  r2dbc:
+    url: r2dbc:postgresql://localhost:42001/libra_view_master
+    username: libra
+    password: Admin123
+  sql:
+    init:
+      platform: postgres
+
+app:
+  client:
+    http:
+      address:

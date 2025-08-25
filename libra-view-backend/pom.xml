@@ -18,7 +18,8 @@
 
     <modules>
         <module>libra-common</module>
-        <module>libra-view-tmdb</module>
+        <module>libra-view-master</module>
+        <module>libra-view-cine-registry</module>
     </modules>
 
     <developers>

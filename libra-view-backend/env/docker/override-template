@@ -9,7 +9,19 @@ services:
     ports:
       - :8080
 
-  keycloakdb:
+  keycloak_db:
+    environment:
+      POSTGRES_USER:
+      POSTGRES_PASSWORD:
+    ports:
+      - :5432
+  libra_view_master:
+    environment:
+      POSTGRES_USER:
+      POSTGRES_PASSWORD:
+    ports:
+      - :5432
+  libra_view_cine_registry:
     environment:
       POSTGRES_USER:
       POSTGRES_PASSWORD:

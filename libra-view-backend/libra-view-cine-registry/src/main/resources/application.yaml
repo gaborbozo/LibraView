@@ -1,0 +1,19 @@
+server:
+  port: 8081
+
+spring:
+  r2dbc:
+    url: r2dbc:postgresql://localhost:42002/libra_view_cine_registry
+    username: libra
+    password: Admin123
+  sql:
+    init:
+      platform: postgres
+
+app:
+  tmdb:
+    authentication:
+      token: # TMDB access token
+  client:
+    http:
+      address:
