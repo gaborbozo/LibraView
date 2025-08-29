@@ -11,4 +11,7 @@ public interface SeriesRepository extends ReactiveCrudRepository<Series, Long> {
 
     Mono<Boolean> existsByReferenceId(Long referenceId);
 
+    Mono<Series> findByReferenceId(Long referenceId);
+
+
 }

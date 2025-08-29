@@ -1,4 +1,4 @@
-package hu.bozgab.libraview.cineregistry.configuration;
+package hu.bozgab.libraview.cineregistry.configuration.security;
 
 import io.swagger.models.HttpMethod;
 import org.springframework.beans.factory.annotation.Value;

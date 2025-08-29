@@ -3,6 +3,8 @@ package hu.bozgab.libraview.cineregistry.mapper;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import hu.bozgab.libraview.cineregistry.domain.Cinematic;
+import hu.bozgab.libraview.cineregistry.domain.CinematicGenre;
 import hu.bozgab.libraview.cineregistry.domain.Genre;
 import hu.bozgab.libraview.cineregistry.generated.model.GenreDTO;
 import hu.bozgab.libraview.cineregistry.generated.model.GenreMovieList200ResponseGenresInner;
@@ -14,7 +16,10 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 
 
-@Mapper(componentModel = "spring", builder = @Builder(disableBuilder = true))
+@Mapper(
+        componentModel = "spring",
+        builder = @Builder(disableBuilder = true)
+)
 public abstract class GenreMapper {
 
     @BeanMapping(ignoreByDefault = true)
@@ -36,5 +41,12 @@ public abstract class GenreMapper {
     public List<GenreDTO> toGenreDTOS(List<Genre> genreEntities) {
         return genreEntities.stream().map(this::toGenreDTO).collect(Collectors.toList());
     }
+
+    @BeanMapping(ignoreByDefault = true)
+    @Mappings({
+            @Mapping(target = "cinematicId", source = "cinematicEntity.id"),
+            @Mapping(target = "genreId", source = "genreEntity.id")
+    })
+    public abstract CinematicGenre toCinematicGenreEntity(Cinematic cinematicEntity, Genre genreEntity);
 
 }

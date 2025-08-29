@@ -41,6 +41,8 @@ paths:
             application/json:
               schema:
                   $ref: "./libra_view_cine_registry.components.yaml#/components/schemas/CinematicDTO"
+        "204":
+          description: No Content
     post:
       summary: Store cinematic
       operationId: storeCinematic

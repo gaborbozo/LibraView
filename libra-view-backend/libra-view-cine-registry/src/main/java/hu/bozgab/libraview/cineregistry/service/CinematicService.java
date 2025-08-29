@@ -1,9 +1,17 @@
 package hu.bozgab.libraview.cineregistry.service;
 
+import java.util.List;
+
+import hu.bozgab.libraview.cineregistry.domain.Cinematic;
 import hu.bozgab.libraview.cineregistry.generated.model.CinematicDTO;
 import hu.bozgab.libraview.cineregistry.generated.model.CinematicType;
+import hu.bozgab.libraview.cineregistry.generated.model.MovieDetails200Response;
+import hu.bozgab.libraview.cineregistry.generated.model.TvSeriesDetails200Response;
+import hu.bozgab.libraview.cineregistry.mapper.GenreMapper;
 import hu.bozgab.libraview.cineregistry.mapper.MovieMapper;
 import hu.bozgab.libraview.cineregistry.mapper.SeriesMapper;
+import hu.bozgab.libraview.cineregistry.repository.CinematicGenreRepository;
+import hu.bozgab.libraview.cineregistry.repository.GenreRepository;
 import hu.bozgab.libraview.cineregistry.repository.MovieRepository;
 import hu.bozgab.libraview.cineregistry.repository.SeriesRepository;
 import hu.bozgab.libraview.cineregistry.tmdb.TMDBClient;
@@ -19,26 +27,30 @@ import reactor.core.publisher.Mono;
 @Service
 public class CinematicService {
 
+    private final GenreRepository genreRepository;
     private final MovieRepository movieRepository;
     private final SeriesRepository seriesRepository;
+    private final CinematicGenreRepository cinematicGenreRepository;
 
     private final MovieMapper movieMapper;
     private final SeriesMapper seriesMapper;
 
     private final TMDBClient tmdbClient;
+    private final GenreMapper genreMapper;
 
     public Mono<CinematicDTO> getCinematic(Long referenceId, CinematicType type) {
-        switch(type) {
-            case MOVIE -> {
-                return movieRepository.findByReferenceId(referenceId).map(movieMapper::toMovieDto);
-            }
-            case SERIES -> {
-                return Mono.empty();
-            }
-            case null -> {
-                return Mono.empty();
-            }
-        }
+        return switch(type) {
+            case MOVIE -> movieRepository.findByReferenceId(referenceId).flatMap(movieEntity ->
+                    cinematicGenreRepository.findAllByCinematicId(movieEntity.getId()).collectList().flatMap(cinematicGenreEntities ->
+                            Mono.just(movieMapper.toMovieDto(movieEntity, cinematicGenreEntities))
+                    )
+            );
+            case SERIES -> seriesRepository.findByReferenceId(referenceId).flatMap(seriesEntity ->
+                    cinematicGenreRepository.findAllByCinematicId(seriesEntity.getId()).collectList().flatMap(cinematicGenreEntities ->
+                            Mono.just(seriesMapper.toSeriesDto(seriesEntity, cinematicGenreEntities))
+                    )
+            );
+        };
     }
 
     public Mono<Void> storeCinematic(Long referenceId, CinematicType type) {
@@ -50,12 +62,12 @@ public class CinematicService {
                             return Mono.empty();
                         }
                         log.debug("Movie not yet exists, starting storing process");
-                        return movieRepository.save(
-                                movieMapper.toMovieEntity(
-                                        tmdbClient.movieDetails(referenceId.intValue(), "", TMDBLanguage.EN.getCode())
-                                )
+
+                        MovieDetails200Response movie = tmdbClient.movieDetails(referenceId.intValue(), "", TMDBLanguage.EN.getCode());
+                        return movieRepository.save(movieMapper.toMovieEntity(movie)).flatMap(movieEntity ->
+                                storeGenres(movieEntity, movie.getGenres().stream().map(g -> g.getId().longValue()).toList())
                         );
-                    }).then();
+                    });
             case SERIES -> seriesRepository.existsByReferenceId(referenceId)
                     .flatMap(exists -> {
                         if(exists) {
@@ -63,12 +75,26 @@ public class CinematicService {
                             return Mono.empty();
                         }
                         log.debug("Series not yet exists, starting storing process");
-                        return seriesRepository.save(
-                                seriesMapper.toSeriesEntity(
-                                        tmdbClient.tvSeriesDetails(referenceId.intValue(), "", TMDBLanguage.EN.getCode()))
+
+                        TvSeriesDetails200Response series = tmdbClient.tvSeriesDetails(referenceId.intValue(), "", TMDBLanguage.EN.getCode());
+                        return seriesRepository.save(seriesMapper.toSeriesEntity(series)).flatMap(seriesEntity ->
+                                storeGenres(seriesEntity, series.getGenres().stream().map(g -> g.getId().longValue()).toList())
                         );
-                    }).then();
+                    });
         };
+    }
+
+    private Mono<Void> storeGenres(Cinematic cinematicEntity, List<Long> genreIds) {
+        return genreRepository
+                .findAllByReferenceIdIsIn(genreIds)
+                .collectList()
+                .flatMap(genreEntities ->
+                        cinematicGenreRepository.saveAll(
+                                genreEntities.stream().map(genreEntity ->
+                                        genreMapper.toCinematicGenreEntity(cinematicEntity, genreEntity)
+                                ).toList()
+                        ).then()
+                );
     }
 
 }

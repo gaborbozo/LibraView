@@ -1,17 +1,28 @@
 package hu.bozgab.libraview.cineregistry.mapper;
 
+import java.util.List;
+
+import hu.bozgab.libraview.cineregistry.domain.CinematicGenre;
 import hu.bozgab.libraview.cineregistry.domain.Movie;
 import hu.bozgab.libraview.cineregistry.generated.model.MovieDTO;
 import hu.bozgab.libraview.cineregistry.generated.model.MovieDetails200Response;
 import hu.bozgab.libraview.common.util.CineRegistryDateFormatter;
+import org.mapstruct.AfterMapping;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Builder;
+import org.mapstruct.Context;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.Mappings;
 
 
-@Mapper(componentModel = "spring", builder = @Builder(disableBuilder = true), imports = { CineRegistryDateFormatter.class })
+@Mapper(
+        componentModel = "spring",
+        builder = @Builder(disableBuilder = true),
+        uses = { GenreMapper.class },
+        imports = { CineRegistryDateFormatter.class }
+)
 public abstract class MovieMapper {
 
     @BeanMapping(ignoreByDefault = true)
@@ -30,6 +41,7 @@ public abstract class MovieMapper {
 
     @BeanMapping(ignoreByDefault = true)
     @Mappings({
+            @Mapping(target = "id"),
             @Mapping(target = "referenceId"),
             @Mapping(target = "title"),
             //@Mapping(target = "releaseDate"),
@@ -40,6 +52,11 @@ public abstract class MovieMapper {
             @Mapping(target = "voteCount"),
             @Mapping(target = "popularity"),
     })
-    public abstract MovieDTO toMovieDto(Movie movieEntity);
+    public abstract MovieDTO toMovieDto(Movie movieEntity, @Context List<CinematicGenre> cinematicGenreEntities);
+
+    @AfterMapping
+    protected void afterToMovieDto(@MappingTarget MovieDTO movieDto, @Context List<CinematicGenre> cinematicGenreEntities) {
+        movieDto.setGenreIds(cinematicGenreEntities.stream().map(CinematicGenre::getGenreId).toList());
+    }
 
 }
