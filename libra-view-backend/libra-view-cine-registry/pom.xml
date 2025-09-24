@@ -41,6 +41,10 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-r2dbc</artifactId>
         </dependency>
         <!-- For now Flyway only supports JDBC -->
@@ -88,6 +92,18 @@
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-impl</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-jackson</artifactId>
         </dependency>
         <!-- TEST -->
         <dependency>
@@ -204,12 +220,21 @@
                             <configOptions>
                                 <sourceFolder>src/gen/java/main</sourceFolder>
                                 <openApiNullable>false</openApiNullable>
-                                <useResponseEntity>false</useResponseEntity>
+
                                 <serializableModel>true</serializableModel>
                                 <interfaceOnly>true</interfaceOnly>
-                                <reactive>true</reactive>
+
                                 <useSpringBoot3>true</useSpringBoot3>
+                                <useResponseEntity>false</useResponseEntity>
+
+                                <reactive>true</reactive>
                             </configOptions>
+
+                            <typeMappings>
+                                <typeMapping>
+                                    java.math.BigDecimal=java.lang.Long
+                                </typeMapping>
+                            </typeMappings>
 
                             <openapiNormalizer>REF_AS_PARENT_IN_ALLOF=true</openapiNormalizer>
                             <generateApiDocumentation>false</generateApiDocumentation>

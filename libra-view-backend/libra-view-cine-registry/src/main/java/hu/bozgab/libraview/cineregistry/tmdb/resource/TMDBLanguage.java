@@ -1,4 +1,4 @@
-package hu.bozgab.libraview.cineregistry.util;
+package hu.bozgab.libraview.cineregistry.tmdb.resource;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

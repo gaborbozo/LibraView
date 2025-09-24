@@ -4,6 +4,7 @@ import java.util.List;
 
 import hu.bozgab.libraview.cineregistry.domain.CinematicGenre;
 import hu.bozgab.libraview.cineregistry.domain.Movie;
+import hu.bozgab.libraview.cineregistry.generated.model.GeneralCinematicDTO;
 import hu.bozgab.libraview.cineregistry.generated.model.MovieDTO;
 import hu.bozgab.libraview.cineregistry.generated.model.MovieDetails200Response;
 import hu.bozgab.libraview.common.util.CineRegistryDateFormatter;
@@ -38,6 +39,15 @@ public abstract class MovieMapper {
             @Mapping(target = "popularity", source = "popularity"),
     })
     public abstract Movie toMovieEntity(MovieDetails200Response movie);
+
+    @BeanMapping(ignoreByDefault = true)
+    @Mappings({
+            @Mapping(target = "id"),
+            @Mapping(target = "referenceId"),
+            @Mapping(target = "title"),
+//        @Mapping(target = "releaseDate"),
+    })
+    public abstract GeneralCinematicDTO toGeneralCinematicDto(Movie movieEntity);
 
     @BeanMapping(ignoreByDefault = true)
     @Mappings({

@@ -11,7 +11,7 @@ import hu.bozgab.libraview.cineregistry.domain.Genre;
 import hu.bozgab.libraview.cineregistry.mapper.GenreMapper;
 import hu.bozgab.libraview.cineregistry.repository.GenreRepository;
 import hu.bozgab.libraview.cineregistry.tmdb.TMDBClient;
-import hu.bozgab.libraview.cineregistry.util.TMDBLanguage;
+import hu.bozgab.libraview.cineregistry.tmdb.resource.TMDBLanguage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;

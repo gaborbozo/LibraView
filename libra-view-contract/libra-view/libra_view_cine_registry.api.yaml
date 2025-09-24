@@ -3,7 +3,7 @@ info:
   title: LibraViewCineRegistry API
   version: 0.0.1
 servers:
-  - url: http://localhost:8081
+  - url: http://localhost:8082/cine-registry
 paths:
   /genre/page:
     get:
@@ -18,6 +18,36 @@ paths:
                 type: array
                 items:
                   $ref: "./libra_view_cine_registry.components.yaml#/components/schemas/GenreDTO"
+  /cinematic/page:
+    post:
+      summary: Return general data for the specified paged request
+      operationId: getCinematicPage
+      parameters:
+        - name: userLibrary
+          in: query
+          required: false
+          schema:
+            type: boolean
+        - in: query
+          name: type
+          required: true
+          schema:
+            $ref: "./libra_view_cine_registry.components.yaml#/components/schemas/CinematicType"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "./common.components.yaml#/components/schemas/PageableRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            text/event-stream:
+              schema:
+                type: array
+                items:
+                  $ref: "./libra_view_cine_registry.components.yaml#/components/schemas/GeneralCinematicDTO"
   /cinematic/{referenceId}:
     get:
       summary: get Cinematic
@@ -27,8 +57,7 @@ paths:
           name: referenceId
           required: true
           schema:
-            type: integer
-            format: int64
+            $ref: "./common.components.yaml#/components/schemas/IdData"
         - in: query
           name: type
           required: true
@@ -51,8 +80,7 @@ paths:
           name: referenceId
           required: true
           schema:
-            type: integer
-            format: int64
+            $ref: "./common.components.yaml#/components/schemas/IdData"
         - in: query
           name: type
           required: true
@@ -60,26 +88,62 @@ paths:
             $ref: "./libra_view_cine_registry.components.yaml#/components/schemas/CinematicType"
       responses:
         "201":
-          description: "Created"
-  /movie/details:
+          description: Created
+  /user/cinematic:
     get:
-      summary: Returns detailed data for specified movies
-      operationId: getMovieDetails
+      summary: Check cinematic(s) in user library
+      operationId: checkCinematicInUserLibrary
       parameters:
-        - name: referenceIds
-          in: query
+        - in: query
+          name: referenceIds
           required: true
           schema:
-            type: array
-            items:
-              type: integer
-              format: int64
+            $ref: "./common.components.yaml#/components/schemas/IdArrayData"
+        - in: query
+          name: type
+          required: true
+          schema:
+            $ref: "./libra_view_cine_registry.components.yaml#/components/schemas/CinematicType"
       responses:
         "200":
           description: OK
           content:
-            text/event-stream:
+            application/json:
               schema:
-                type: array
-                items:
-                  $ref: "./libra_view_cine_registry.components.yaml#/components/schemas/CinematicDTO"
+                $ref: "./common.components.yaml#/components/schemas/IdArrayData"
+        "204":
+          description: No Content
+    post:
+      summary: Add cinematic(s) to user library
+      operationId: addCinematicToUserLibrary
+      parameters:
+        - in: query
+          name: referenceIds
+          required: true
+          schema:
+            $ref: "./common.components.yaml#/components/schemas/IdArrayData"
+        - in: query
+          name: type
+          required: true
+          schema:
+            $ref: "./libra_view_cine_registry.components.yaml#/components/schemas/CinematicType"
+      responses:
+        "201":
+          description: Created
+    delete:
+      summary: Delete cinematic(s) to user library
+      operationId: deleteCinematicFromUserLibrary
+      parameters:
+        - in: query
+          name: referenceIds
+          required: true
+          schema:
+            $ref: "./common.components.yaml#/components/schemas/IdArrayData"
+        - in: query
+          name: type
+          required: true
+          schema:
+            $ref: "./libra_view_cine_registry.components.yaml#/components/schemas/CinematicType"
+      responses:
+        "200":
+          description: Ok

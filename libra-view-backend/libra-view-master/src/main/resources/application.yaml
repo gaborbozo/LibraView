@@ -1,5 +1,5 @@
 server:
-  port: 8082
+  port: 8081
 
 spring:
   r2dbc:
@@ -11,6 +11,9 @@ spring:
       platform: postgres
 
 app:
+  jwt:
+    secret-key: # wich will be used by the JWT service
+    expiration-time: # in sec
   client:
     http:
       address:

@@ -6,12 +6,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.codec.HttpMessageWriter;
 import org.springframework.web.reactive.HandlerResult;
 import org.springframework.web.reactive.accept.RequestedContentTypeResolver;
+import org.springframework.web.reactive.result.method.annotation.ResponseBodyResultHandler;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 
-public class CustomResponseBodyResultHandler extends org.springframework.web.reactive.result.method.annotation.ResponseBodyResultHandler {
+public class CustomResponseBodyResultHandler extends ResponseBodyResultHandler {
 
     public CustomResponseBodyResultHandler(List<HttpMessageWriter<?>> writers, RequestedContentTypeResolver resolver) {
         super(writers, resolver);

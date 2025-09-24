@@ -1,0 +1,35 @@
+components:
+  schemas:
+    PageableRequest:
+      type: object
+      required:
+        - page
+        - size
+      properties:
+        page:
+          type: integer
+          format: int32
+        size:
+          type: integer
+          format: int32
+        filters:
+          type: array
+          items:
+            $ref: "#/components/schemas/FilterDescriptor"
+    FilterDescriptor:
+      type: object
+      required:
+        - field
+        - value
+      properties:
+        field:
+          type: string
+        value:
+          type: string
+    IdData:
+      type: integer
+      format: int64
+    IdArrayData:
+      type: array
+      items:
+        $ref: "#/components/schemas/IdData"

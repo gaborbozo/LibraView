@@ -1,24 +1,32 @@
 package hu.bozgab.libraview.cineregistry.service;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import hu.bozgab.libraview.cineregistry.domain.Cinematic;
 import hu.bozgab.libraview.cineregistry.generated.model.CinematicDTO;
 import hu.bozgab.libraview.cineregistry.generated.model.CinematicType;
+import hu.bozgab.libraview.cineregistry.generated.model.FilterDescriptor;
+import hu.bozgab.libraview.cineregistry.generated.model.GeneralCinematicDTO;
 import hu.bozgab.libraview.cineregistry.generated.model.MovieDetails200Response;
+import hu.bozgab.libraview.cineregistry.generated.model.PageableRequest;
 import hu.bozgab.libraview.cineregistry.generated.model.TvSeriesDetails200Response;
 import hu.bozgab.libraview.cineregistry.mapper.GenreMapper;
 import hu.bozgab.libraview.cineregistry.mapper.MovieMapper;
 import hu.bozgab.libraview.cineregistry.mapper.SeriesMapper;
 import hu.bozgab.libraview.cineregistry.repository.CinematicGenreRepository;
 import hu.bozgab.libraview.cineregistry.repository.GenreRepository;
+import hu.bozgab.libraview.cineregistry.repository.MoviePagingRepository;
 import hu.bozgab.libraview.cineregistry.repository.MovieRepository;
 import hu.bozgab.libraview.cineregistry.repository.SeriesRepository;
 import hu.bozgab.libraview.cineregistry.tmdb.TMDBClient;
-import hu.bozgab.libraview.cineregistry.util.TMDBLanguage;
+import hu.bozgab.libraview.cineregistry.tmdb.resource.TMDBLanguage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 
@@ -29,6 +37,7 @@ public class CinematicService {
 
     private final GenreRepository genreRepository;
     private final MovieRepository movieRepository;
+    private final MoviePagingRepository moviePagingRepository;
     private final SeriesRepository seriesRepository;
     private final CinematicGenreRepository cinematicGenreRepository;
 
@@ -37,6 +46,17 @@ public class CinematicService {
 
     private final TMDBClient tmdbClient;
     private final GenreMapper genreMapper;
+
+    public Flux<GeneralCinematicDTO> getCinematicPage(PageableRequest pageableRequest, CinematicType type, Boolean userLibrary) {
+        var pagedRequest = PageRequest.of(pageableRequest.getPage(), pageableRequest.getSize());
+        Map<String, String> filters = pageableRequest.getFilters().stream().collect(Collectors
+                .toMap(FilterDescriptor::getField, FilterDescriptor::getValue));
+        return switch(type) {
+            case MOVIE ->
+                    moviePagingRepository.findAllByTitleContainingIgnoreCase(pagedRequest, filters.get("title")).map(movieMapper::toGeneralCinematicDto);
+            case SERIES -> Flux.empty();
+        };
+    }
 
     public Mono<CinematicDTO> getCinematic(Long referenceId, CinematicType type) {
         return switch(type) {

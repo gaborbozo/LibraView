@@ -19,6 +19,24 @@ components:
           format: int64
         name:
           type: string
+    GeneralCinematicDTO:
+      type: object
+      required:
+        - id
+        - referenceId
+        - title
+      properties:
+        id:
+          type: integer
+          format: int64
+        referenceId:
+          type: integer
+          format: int64
+        title:
+          type: string
+        releaseDate:
+          type: string
+          format: date-time
     CinematicDTO:
       type: object
       required:
@@ -51,7 +69,7 @@ components:
           format: double
         voteCount:
           type: integer
-          format: int32
+          format: int64
         popularity:
           type: integer
           format: double

@@ -42,6 +42,10 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-r2dbc</artifactId>
         </dependency>
         <!-- For now Flyway only supports JDBC -->
@@ -143,6 +147,50 @@
                         <goals>
                             <goal>migrate</goal>
                         </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.openapitools</groupId>
+                <artifactId>openapi-generator-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>libra-view-master-api-generator</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <generatorName>spring</generatorName>
+                            <library>spring-boot</library>
+
+                            <inputSpec>
+                                ${project.basedir}/../../libra-view-contract/libra-view/libra_view_master.api.yaml
+                            </inputSpec>
+                            <output>${project.build.directory}/generated-sources/libra-view-master</output>
+                            <cleanupOutput>true</cleanupOutput>
+
+                            <apiPackage>hu.bozgab.libraview.master.generated.api</apiPackage>
+                            <modelPackage>hu.bozgab.libraview.master.generated.model</modelPackage>
+                            <invokerPackage>hu.bozgab.libraview.master.generated.client</invokerPackage>
+
+                            <configOptions>
+                                <sourceFolder>src/gen/java/main</sourceFolder>
+                                <openApiNullable>false</openApiNullable>
+
+                                <serializableModel>true</serializableModel>
+                                <interfaceOnly>true</interfaceOnly>
+
+                                <useSpringBoot3>true</useSpringBoot3>
+                                <useResponseEntity>false</useResponseEntity>
+
+                                <reactive>true</reactive>
+                            </configOptions>
+
+                            <generateApiDocumentation>false</generateApiDocumentation>
+                            <generateApiTests>false</generateApiTests>
+                            <generateModelTests>false</generateModelTests>
+                            <generateModelDocumentation>false</generateModelDocumentation>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>

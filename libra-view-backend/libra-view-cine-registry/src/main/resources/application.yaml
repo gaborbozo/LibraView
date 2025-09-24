@@ -1,5 +1,5 @@
 server:
-  port: 8081
+  port: 8082
 
 spring:
   r2dbc:
@@ -10,7 +10,16 @@ spring:
     init:
       platform: postgres
 
+logging:
+  config: classpath:logback-config.xml
+  level:
+    io.r2dbc.postgresql.QUERY: DEBUG
+    io.r2dbc.postgresql.PARAM: DEBUG
+
 app:
+  jwt:
+    secret-key: # wich will be used by the JWT service
+    expiration-time: # in sec
   tmdb:
     authentication:
       token: # TMDB access token
