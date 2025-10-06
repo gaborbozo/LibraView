@@ -1,15 +1,28 @@
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="flex-row flex-wrap gap-16">
   <div>
-    <mat-form-field>
-      <mat-label>Cinematic name</mat-label>
-      <input matInput placeholder="name" formControlName="name" />
-    </mat-form-field>
+    <mat-button-toggle-group formControlName="type" [hideSingleSelectionIndicator]="true">
+      <mat-button-toggle value="MOVIE">Movie</mat-button-toggle>
+      <mat-button-toggle value="SERIES">Series</mat-button-toggle>
+      <mat-button-toggle value="BOTH">Both</mat-button-toggle>
+    </mat-button-toggle-group>
   </div>
+  <mat-form-field>
+    <mat-label>Cinematic name</mat-label>
+    <input matInput placeholder="name" formControlName="title" />
+  </mat-form-field>
 </form>
-<div class="flex-row flex-wrap gap-16">
-  <app-cinematic-card
-    *ngFor="let item of items"
-    [item]="item"
-    [dataType]="'TMDB_GENERAL'"
-  ></app-cinematic-card>
-</div>
+@if (searchResponse) {
+  <div class="flex-row flex-wrap gap-16">
+    @for (item of searchResponse.results; track item.id) {
+      <app-cinematic-card
+        [item]="item"
+        [dataType]="'TMDB_GENERAL'"
+      ></app-cinematic-card>
+    }
+  </div>
+  <mat-paginator [length]="searchResponse.total_results"
+                 [pageSize]="searchResponse.results?.length"
+                 [pageSizeOptions]="[searchResponse.results?.length!]"
+                 (page)="onSubmit($event)">
+  </mat-paginator>
+}

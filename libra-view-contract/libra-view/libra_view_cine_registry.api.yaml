@@ -4,6 +4,15 @@ info:
   version: 0.0.1
 servers:
   - url: http://localhost:8082/cine-registry
+components:
+  securitySchemes:
+    sec0:
+      type: apiKey
+      in: header
+      name: Authorization
+      x-bearer-format: bearer
+security:
+  - sec0: []
 paths:
   /genre/page:
     get:

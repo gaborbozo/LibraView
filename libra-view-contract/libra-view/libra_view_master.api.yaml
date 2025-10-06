@@ -3,7 +3,7 @@ info:
   title: LibraViewCineRegistry API
   version: 0.0.1
 servers:
-  - url: http://localhost:8081/master
+  - url: http://localhost:8081
 paths:
   /user/login:
     post:

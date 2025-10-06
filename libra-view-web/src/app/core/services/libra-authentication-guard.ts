@@ -15,6 +15,7 @@ export class LibraAuthenticationGuard implements CanActivate {
     if (this.authenticationService.isLoggedIn()) {
       return true
     }
+    // TODO remove router, use the given arguments?
     this.router.navigate(['/login'])
     return false
   }

@@ -1,35 +1,44 @@
-import { Component, OnInit } from '@angular/core'
-import { FormControl, FormGroup } from '@angular/forms'
-import { CinematicClientService } from '../../../shared/client-service/cinematic-client.service'
-import { TMDBMovieGeneral } from '../../../shared/data-model/cinematic/integration/movies/tmdb-movie-general'
-import { TMDBSearchMovieRequest } from '../../../shared/data-model/cinematic/integration/search/tmdb-search-movie.request'
+import { Component } from '@angular/core'
+import { UntypedFormBuilder } from '@angular/forms'
+import { DefaultService as TmdbService } from '../../../../generated/api/tmdb'
+import { AliasCinematicSearchResponse } from '../../../shared/common/alias/cinematic.alias'
+import { PageEvent } from '@angular/material/paginator'
+import { IFormBuilder, IFormGroup } from '@rxweb/types'
+
+export type SearchCinemaType = 'MOVIE' | 'SERIES' | 'BOTH'
+
+interface SearchRequestForm {
+  type: SearchCinemaType
+  title: string
+}
 
 @Component({
-    selector: 'app-cinematic-search',
-    templateUrl: './search.component.html',
-    styleUrl: './search.component.scss',
-    standalone: false
+  selector: 'app-cinematic-search',
+  templateUrl: './search.component.html',
+  styleUrl: './search.component.scss',
+  standalone: false,
 })
-export class CinematicSearchComponent implements OnInit {
-  form!: FormGroup
-  items: TMDBMovieGeneral[] = []
+export class CinematicSearchComponent {
+  form!: IFormGroup<SearchRequestForm>
+  searchResponse?: AliasCinematicSearchResponse
 
-  constructor(private cinematicClient: CinematicClientService) {}
-
-  ngOnInit(): void {
-    this.form = new FormGroup({
-      name: new FormControl('', []),
+  constructor(
+    private tmdbService: TmdbService,
+    fb: UntypedFormBuilder,
+  ) {
+    this.form = (fb as IFormBuilder).group<SearchRequestForm>({
+      type: ['MOVIE', []],
+      title: ['', []],
     })
   }
 
-  onSubmit() {
+  onSubmit(page?: PageEvent) {
+    const pageNumber = page?.pageIndex ?? 0
+
     if (this.form.valid) {
-      this.cinematicClient
-        .searchCinematics({
-          discriminator: 'MOVIE',
-          query: this.form.controls['name'].value,
-        } as TMDBSearchMovieRequest)
-        .subscribe((response) => (this.items = response.results))
+      this.tmdbService
+        .searchMulti(this.form.controls.title.value!, true, 'en', pageNumber + 1)
+        .subscribe((response) => (this.searchResponse = response))
     }
   }
 }

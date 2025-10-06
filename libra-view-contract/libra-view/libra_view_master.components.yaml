@@ -12,9 +12,13 @@ components:
           type: string
     AuthNResponse:
       type: object
+      required:
+        - token
+        - expiration
       properties:
         token:
           type: string
+          format: jwt
         expiration:
           type: number
           format: int64

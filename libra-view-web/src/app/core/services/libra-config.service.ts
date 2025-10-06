@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core'
 
 export enum LibraConfigKeys {
-  'BACKEND_URL' = 'backendURL',
-  'TOKEN' = 'token',
+  'LIBRA_TOKEN' = 'libraToken',
+  'TMDB_TOKEN' = 'tmdbToken',
 }
 
 @Injectable({ providedIn: 'root' })

@@ -1,21 +1,24 @@
-import { provideServerRendering } from '@angular/ssr';
+import { provideServerRendering } from '@angular/ssr'
 import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 import {
-  APP_INITIALIZER,
   ApplicationConfig,
+  inject,
   mergeApplicationConfig,
+  provideAppInitializer,
   provideZoneChangeDetection,
 } from '@angular/core'
 import { provideClientHydration } from '@angular/platform-browser'
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async'
 import { provideRouter, Routes } from '@angular/router'
-import { ApiInterceptor } from './core/interceptors/api.interceptor'
-import { AuthInterceptor } from './core/interceptors/auth.interceptor'
 import { ResponseInterceptor } from './core/interceptors/response.interceptor'
 import { LibraAuthenticationGuard } from './core/services/libra-authentication-guard'
-import { LibraInitializer } from './core/services/libra-initializer.service'
 import { HomeComponent } from './features/home/home.component'
 import { LoginComponent } from './features/login/login.component'
+import { SettingsComponent } from './features/settings/settings.component'
+import { DefaultService as TmdbService } from '../generated/api/tmdb'
+import { DefaultService as MasterService } from '../generated/api/master'
+import { DefaultService as CineRegistryService } from '../generated/api/cine-registry'
+import { LibraConfigKeys, LibraConfigService } from './core/services/libra-config.service'
 
 export const routes: Routes = [
   {
@@ -27,6 +30,12 @@ export const routes: Routes = [
     path: 'login',
     component: LoginComponent,
     title: 'Login',
+  },
+  {
+    path: 'settings',
+    component: SettingsComponent,
+    title: 'Settings',
+    canActivate: [LibraAuthenticationGuard],
   },
   {
     path: 'cinematic',
@@ -56,33 +65,30 @@ export const appConfig: ApplicationConfig = {
     */
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: ApiInterceptor,
-      multi: true,
-    },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: AuthInterceptor,
-      multi: true,
-    },
-    {
-      provide: HTTP_INTERCEPTORS,
       useClass: ResponseInterceptor,
       multi: true,
     },
     /*
       Services
     */
-    {
-      provide: APP_INITIALIZER,
-      useFactory: initializeApp,
-      deps: [LibraInitializer],
-      multi: true,
-    },
+    provideAppInitializer(initApp()),
   ],
 }
 
-export function initializeApp(libraInitializer: LibraInitializer) {
-  return () => libraInitializer.getConfigurationDetails().subscribe()
+function initApp(): () => void {
+  return () => {
+    const tmdbService = inject(TmdbService)
+    const masterService = inject(MasterService)
+    const cineRegistryService = inject(CineRegistryService)
+    const config = inject(LibraConfigService)
+
+    tmdbService.configuration.credentials['sec0'] = () =>
+      config.getResource(LibraConfigKeys.TMDB_TOKEN) ?? ''
+    masterService.configuration.credentials['sec0'] = () =>
+      config.getResource(LibraConfigKeys.LIBRA_TOKEN) ?? ''
+    cineRegistryService.configuration.credentials['sec0'] = () =>
+      config.getResource(LibraConfigKeys.LIBRA_TOKEN) ?? ''
+  }
 }
 
 const serverConfig: ApplicationConfig = {

@@ -1,4 +1,4 @@
-package hu.bozgab.libraview.cineregistry.configuration.security;
+package hu.bozgab.libraview.master.configuration.security;
 
 import java.util.Arrays;
 

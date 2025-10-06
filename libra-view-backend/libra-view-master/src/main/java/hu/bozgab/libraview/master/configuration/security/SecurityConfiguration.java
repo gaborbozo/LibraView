@@ -39,6 +39,7 @@ public class SecurityConfiguration {
 
         return http
                 .authorizeExchange(exchanges -> exchanges
+                        .pathMatchers(HttpMethod.OPTIONS).permitAll()
                         .pathMatchers(HttpMethod.POST, "/user/login").permitAll()
                         .anyExchange().authenticated()
                 )

@@ -4,8 +4,8 @@ import { MatButtonModule } from '@angular/material/button'
 import { MatCardModule } from '@angular/material/card'
 import { MatChipsModule } from '@angular/material/chips'
 import { MatIconModule } from '@angular/material/icon'
-import { CinematicCardComponent } from './components/cinematic-card/cinematic-card.component'
-import { ToggleDrawerDirective } from './directives/toggle-drawer'
+import { CinematicCardComponent } from './component/cinematic-card/cinematic-card.component'
+import { ToggleDrawerDirective } from './directive/toggle-drawer'
 
 @NgModule({
   imports: [CommonModule, MatIconModule, MatButtonModule, MatCardModule, MatChipsModule],
@@ -19,6 +19,10 @@ import { ToggleDrawerDirective } from './directives/toggle-drawer'
       Directives
     */
     ToggleDrawerDirective,
+
+    /*
+      Pipes
+     */
   ],
   exports: [
     /*
@@ -30,6 +34,10 @@ import { ToggleDrawerDirective } from './directives/toggle-drawer'
       Directives
     */
     ToggleDrawerDirective,
+
+    /*
+      Pipes
+     */
   ],
 })
 export class LibraCommonModule {}

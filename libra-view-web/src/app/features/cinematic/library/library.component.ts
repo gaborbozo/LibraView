@@ -1,21 +1,19 @@
 import { Component, OnInit } from '@angular/core'
-import { CinematicClientService } from '../../../shared/client-service/cinematic-client.service'
-import { Cinematic } from '../../../shared/data-model/cinematic/cinematic'
 
 @Component({
-    selector: 'app-cinematic-library',
-    templateUrl: './library.component.html',
-    styleUrl: './library.component.scss',
-    standalone: false
+  selector: 'app-cinematic-library',
+  templateUrl: './library.component.html',
+  styleUrl: './library.component.scss',
+  standalone: false,
 })
 export class CinematicLibraryComponent implements OnInit {
-  items: Cinematic[] = []
+  // items: Cinematic[] = []
 
-  constructor(private cinematicClient: CinematicClientService) {}
+  constructor() {}
 
   ngOnInit(): void {
-    this.cinematicClient.getCinematic().subscribe((response) => {
-      this.items = response.cinematics
-    })
+    // this.cinematicClient.getCinematic().subscribe((response) => {
+    //   this.items = response.cinematics
+    // })
   }
 }
