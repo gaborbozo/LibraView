@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core'
 import { LibraConfigKeys, LibraConfigService } from './libra-config.service'
-import { DefaultService as LibraMasterService, LoginRequest } from '../../../generated/api/master'
+import { DefaultService as LibraMasterApi, LoginRequest } from '../../../generated/api/master'
 
 @Injectable({
   providedIn: 'root',
@@ -8,12 +8,15 @@ import { DefaultService as LibraMasterService, LoginRequest } from '../../../gen
 export class LibraAuthenticationService {
   constructor(
     private libraConfig: LibraConfigService,
-    private libraMasterService: LibraMasterService,
+    private libraMasterApi: LibraMasterApi,
   ) {}
 
   login(request: LoginRequest) {
-    this.libraMasterService.login(request).subscribe((response) => {
-      this.libraConfig.setResource(LibraConfigKeys.LIBRA_TOKEN, `Bearer ${response.token}`)
+    this.libraMasterApi.login(request).subscribe((response) => {
+      this.libraConfig.setResource<LibraConfigKeys.LIBRA_TOKEN>(
+        LibraConfigKeys.LIBRA_TOKEN,
+        `Bearer ${response.token}`,
+      )
     })
   }
 
@@ -22,6 +25,6 @@ export class LibraAuthenticationService {
   }
 
   isLoggedIn(): boolean {
-    return !!this.libraConfig.getResource(LibraConfigKeys.LIBRA_TOKEN) // TODO + based on tokens relating timeout, calculate if it expired already
+    return !!this.libraConfig.getResource<LibraConfigKeys.LIBRA_TOKEN>(LibraConfigKeys.LIBRA_TOKEN) // TODO + based on tokens relating timeout, calculate if it expired already
   }
 }

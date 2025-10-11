@@ -1,16 +1,24 @@
 import { Component } from '@angular/core'
 import { UntypedFormBuilder } from '@angular/forms'
-import { DefaultService as TmdbService } from '../../../../generated/api/tmdb'
-import { AliasCinematicSearchResponse } from '../../../shared/common/alias/cinematic.alias'
+import {
+  AliasMovieSearchResponse,
+  AliasSeriesSearchResponse,
+} from '../../../constants/cinematic.alias'
 import { PageEvent } from '@angular/material/paginator'
 import { IFormBuilder, IFormGroup } from '@rxweb/types'
+import { DefaultService as TmdbApi } from '../../../../generated/api/tmdb'
+import { CinematicType } from '../../../../generated/api/cine-registry'
 
-export type SearchCinemaType = 'MOVIE' | 'SERIES' | 'BOTH'
+export type CinematicSearchMode = CinematicType
 
 interface SearchRequestForm {
-  type: SearchCinemaType
+  type: CinematicSearchMode
   title: string
 }
+
+export type CinematicSearchResult =
+  | { mode: 'MOVIE'; response: AliasMovieSearchResponse }
+  | { mode: 'SERIES'; response: AliasSeriesSearchResponse }
 
 @Component({
   selector: 'app-cinematic-search',
@@ -20,10 +28,12 @@ interface SearchRequestForm {
 })
 export class CinematicSearchComponent {
   form!: IFormGroup<SearchRequestForm>
-  searchResponse?: AliasCinematicSearchResponse
+  searchResponse?: CinematicSearchResult
+
+  protected readonly CinematicType = CinematicType
 
   constructor(
-    private tmdbService: TmdbService,
+    private tmdbService: TmdbApi,
     fb: UntypedFormBuilder,
   ) {
     this.form = (fb as IFormBuilder).group<SearchRequestForm>({
@@ -33,12 +43,25 @@ export class CinematicSearchComponent {
   }
 
   onSubmit(page?: PageEvent) {
-    const pageNumber = page?.pageIndex ?? 0
+    if (!this.form.valid) return
 
-    if (this.form.valid) {
-      this.tmdbService
-        .searchMulti(this.form.controls.title.value!, true, 'en', pageNumber + 1)
-        .subscribe((response) => (this.searchResponse = response))
+    const pageNumber = page?.pageIndex ?? 0
+    const mode = this.form.controls.type.value!
+    const title = this.form.controls.title.value!
+
+    switch (mode) {
+      case 'MOVIE': {
+        this.tmdbService
+          .searchMovie(title, true, 'en', undefined, pageNumber + 1)
+          .subscribe((response) => (this.searchResponse = { mode: mode, response: response }))
+        break
+      }
+      case 'SERIES': {
+        this.tmdbService
+          .searchTv(title, undefined, true, 'en', pageNumber + 1)
+          .subscribe((response) => (this.searchResponse = { mode: mode, response: response }))
+        break
+      }
     }
   }
 }

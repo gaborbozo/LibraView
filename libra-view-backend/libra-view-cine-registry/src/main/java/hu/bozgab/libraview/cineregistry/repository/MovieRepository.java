@@ -12,6 +12,10 @@ import reactor.core.publisher.Mono;
 @Repository
 public interface MovieRepository extends BaseMovieRepository {
 
+    default Flux<Movie> page(String title, Long userId, long limit, long offset) {
+        return page(title, userId, limit, offset * limit, CinematicType.MOVIE);
+    }
+
     default Mono<Boolean> existsByReferenceId(Long referenceId) {
         return existsByReferenceIdAndDiscriminator(referenceId, CinematicType.MOVIE);
     }

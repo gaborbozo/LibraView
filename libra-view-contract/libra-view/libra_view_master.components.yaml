@@ -20,5 +20,5 @@ components:
           type: string
           format: jwt
         expiration:
-          type: number
+          type: integer
           format: int64

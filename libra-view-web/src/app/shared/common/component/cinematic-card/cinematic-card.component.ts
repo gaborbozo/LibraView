@@ -1,9 +1,13 @@
 import { Component, Input, OnInit } from '@angular/core'
-import { AliasCinematicSearchResponseItem } from '../../alias/cinematic.alias'
+import {
+  AliasMovieSearchResponseItem,
+  AliasSeriesSearchResponseItem,
+} from '../../../../constants/cinematic.alias'
 import {
   CinematicType,
-  DefaultService as CineRegistryService,
+  DefaultService as LibraCineRegistryApi,
 } from '../../../../../generated/api/cine-registry'
+import { CinematicMetaService } from '../../../../core/services/cinematic-meta.service'
 
 @Component({
   selector: 'app-cinematic-card',
@@ -12,12 +16,18 @@ import {
   standalone: false,
 })
 export class CinematicCardComponent implements OnInit {
-  @Input() dataType!: 'TMDB_GENERAL' | 'CINEMATIC'
-  @Input() item!: AliasCinematicSearchResponseItem
+  @Input() searchItem?:
+    | { type: 'MOVIE'; item: AliasMovieSearchResponseItem }
+    | { type: 'SERIES'; item: AliasSeriesSearchResponseItem }
 
   imageBaseUrl?: string
 
-  constructor(private cineRegistryService: CineRegistryService) {}
+  constructor(
+    private libraCineRegistryApi: LibraCineRegistryApi,
+    private cinematicMeta: CinematicMetaService,
+  ) {
+    this.imageBaseUrl = cinematicMeta.getBaseUrl()
+  }
 
   ngOnInit(): void {
     // this.libraInitializer
@@ -26,14 +36,6 @@ export class CinematicCardComponent implements OnInit {
   }
 
   addMovieItem(id: number) {
-    this.cineRegistryService.addCinematicToUserLibrary([id], CinematicType.Movie).subscribe()
+    this.libraCineRegistryApi.addCinematicToUserLibrary([id], CinematicType.Movie).subscribe()
   }
-
-  // cardDefinedWithTMDBGeneral(item: TMDBMovieGeneral | Cinematic): item is TMDBMovieGeneral {
-  //   return this.dataType === 'TMDB_GENERAL'
-  // }
-  //
-  // cardDefinedWithCinematic(item: TMDBMovieGeneral | Cinematic): item is Cinematic {
-  //   return this.dataType === 'CINEMATIC'
-  // }
 }

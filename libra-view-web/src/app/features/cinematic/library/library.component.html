@@ -1,7 +1,19 @@
-<div class="flex-row flex-wrap gap-16">
-  <!--  <app-cinematic-card-->
-  <!--    *ngFor="let item of items"-->
-  <!--    [item]="item"-->
-  <!--    [dataType]="'CINEMATIC'"-->
-  <!--  ></app-cinematic-card>-->
-</div>
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="flex-row flex-wrap gap-16">
+  <div>
+    <mat-button-toggle-group formControlName="type" [hideSingleSelectionIndicator]="true">
+      <mat-button-toggle [value]="CinematicType.Movie">Movie</mat-button-toggle>
+      <mat-button-toggle [value]="CinematicType.Series">Series</mat-button-toggle>
+    </mat-button-toggle-group>
+  </div>
+  <mat-form-field>
+    <mat-label>Title</mat-label>
+    <input matInput formControlName="title" />
+  </mat-form-field>
+</form>
+@if (items) {
+  @for (item of items; track $index) {
+    <ul>
+      <li>{{ item.title }}</li>
+    </ul>
+  }
+}

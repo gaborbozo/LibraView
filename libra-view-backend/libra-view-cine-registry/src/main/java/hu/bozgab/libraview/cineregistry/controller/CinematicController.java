@@ -1,5 +1,6 @@
 package hu.bozgab.libraview.cineregistry.controller;
 
+import hu.bozgab.libraview.cineregistry.configuration.security.LibraSecurityContext;
 import hu.bozgab.libraview.cineregistry.generated.api.CinematicApi;
 import hu.bozgab.libraview.cineregistry.generated.model.CinematicDTO;
 import hu.bozgab.libraview.cineregistry.generated.model.CinematicType;
@@ -23,7 +24,9 @@ public class CinematicController implements CinematicApi {
 
     @Override
     public Flux<GeneralCinematicDTO> getCinematicPage(CinematicType type, Mono<PageableRequest> pageableRequest, Boolean userLibrary, ServerWebExchange exchange) {
-        return pageableRequest.flatMapMany(request -> cinematicService.getCinematicPage(request, type, userLibrary));
+        return LibraSecurityContext.getCurrentUser().flatMapMany(user ->
+                pageableRequest.flatMapMany(request -> cinematicService.getCinematicPage(request, type, Boolean.TRUE.equals(userLibrary) ? user.getId() : null)
+                ));
     }
 
     @Override

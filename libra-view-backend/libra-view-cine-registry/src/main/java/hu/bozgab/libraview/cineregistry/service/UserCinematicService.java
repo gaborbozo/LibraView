@@ -18,6 +18,8 @@ import reactor.core.publisher.Mono;
 @Service
 public class UserCinematicService {
 
+    private final CinematicService cinematicService;
+
     private final UserCinematicRepository userCinematicRepository;
 
     public Flux<Long> checkCinematicInUserLibrary(LibraUser user, List<Long> referenceIds, CinematicType type) {
@@ -54,6 +56,8 @@ public class UserCinematicService {
 //                            });
                     return userCinematicRepository.saveAll(
                             referenceIds.stream().map(referenceId -> {
+                                cinematicService.storeCinematicAsync(referenceId, type);
+
                                 UserCinematicReference userCinematicReference = new UserCinematicReference();
                                 userCinematicReference.setUserId(user.getId());
                                 userCinematicReference.setCinematicReferenceId(referenceId);

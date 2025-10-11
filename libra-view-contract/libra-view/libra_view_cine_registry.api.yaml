@@ -22,7 +22,7 @@ paths:
         "200":
           description: OK
           content:
-            text/event-stream:
+            application/json:
               schema:
                 type: array
                 items:
@@ -52,7 +52,7 @@ paths:
         "200":
           description: OK
           content:
-            text/event-stream:
+            application/json:
               schema:
                 type: array
                 items:

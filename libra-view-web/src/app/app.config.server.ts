@@ -5,7 +5,7 @@ import {
   inject,
   mergeApplicationConfig,
   provideAppInitializer,
-  provideZoneChangeDetection,
+  provideZoneChangeDetection
 } from '@angular/core'
 import { provideClientHydration } from '@angular/platform-browser'
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async'
@@ -15,9 +15,9 @@ import { LibraAuthenticationGuard } from './core/services/libra-authentication-g
 import { HomeComponent } from './features/home/home.component'
 import { LoginComponent } from './features/login/login.component'
 import { SettingsComponent } from './features/settings/settings.component'
-import { DefaultService as TmdbService } from '../generated/api/tmdb'
-import { DefaultService as MasterService } from '../generated/api/master'
-import { DefaultService as CineRegistryService } from '../generated/api/cine-registry'
+import { DefaultService as LibraMasterApi } from '../generated/api/master'
+import { DefaultService as TmdbApi } from '../generated/api/tmdb'
+import { DefaultService as LibraCineRegistryApi } from '../generated/api/cine-registry'
 import { LibraConfigKeys, LibraConfigService } from './core/services/libra-config.service'
 
 export const routes: Routes = [
@@ -77,17 +77,17 @@ export const appConfig: ApplicationConfig = {
 
 function initApp(): () => void {
   return () => {
-    const tmdbService = inject(TmdbService)
-    const masterService = inject(MasterService)
-    const cineRegistryService = inject(CineRegistryService)
-    const config = inject(LibraConfigService)
+    const tmdbApi = inject(TmdbApi)
+    const libraMasterApi = inject(LibraMasterApi)
+    const libraCineRegistryApi = inject(LibraCineRegistryApi)
+    const libraConfig = inject(LibraConfigService)
 
-    tmdbService.configuration.credentials['sec0'] = () =>
-      config.getResource(LibraConfigKeys.TMDB_TOKEN) ?? ''
-    masterService.configuration.credentials['sec0'] = () =>
-      config.getResource(LibraConfigKeys.LIBRA_TOKEN) ?? ''
-    cineRegistryService.configuration.credentials['sec0'] = () =>
-      config.getResource(LibraConfigKeys.LIBRA_TOKEN) ?? ''
+    tmdbApi.configuration.credentials['sec0'] = () =>
+      libraConfig.getResource<LibraConfigKeys.TMDB_TOKEN>(LibraConfigKeys.TMDB_TOKEN) ?? ''
+    libraMasterApi.configuration.credentials['sec0'] = () =>
+      libraConfig.getResource<LibraConfigKeys.LIBRA_TOKEN>(LibraConfigKeys.LIBRA_TOKEN) ?? ''
+    libraCineRegistryApi.configuration.credentials['sec0'] = () =>
+      libraConfig.getResource<LibraConfigKeys.LIBRA_TOKEN>(LibraConfigKeys.LIBRA_TOKEN) ?? ''
   }
 }
 

@@ -4,6 +4,7 @@ import { LibraCommonModule } from '../../shared/common/libra-common.module'
 import { SharedModule } from '../../shared/shared.module'
 import { LibraConfigKeys, LibraConfigService } from '../../core/services/libra-config.service'
 import { UntypedFormBuilder } from '@angular/forms'
+import { CinematicMetaService } from '../../core/services/cinematic-meta.service'
 
 interface SettingsForm {
   tmdbToken: string
@@ -21,14 +22,21 @@ export class SettingsComponent {
 
   constructor(
     private config: LibraConfigService,
+    private cinematicMeta: CinematicMetaService,
     fb: UntypedFormBuilder,
   ) {
     this.form = (fb as IFormBuilder).group<SettingsForm>({
-      tmdbToken: [config.getResource(LibraConfigKeys.TMDB_TOKEN) ?? '', []],
+      tmdbToken: [
+        config.getResource<LibraConfigKeys.TMDB_TOKEN>(LibraConfigKeys.TMDB_TOKEN) ?? '',
+        [],
+      ],
     })
   }
 
   onSubmit() {
-    this.config.setResource(LibraConfigKeys.TMDB_TOKEN, this.form.controls.tmdbToken.value!)
+    this.config.setResource<LibraConfigKeys.TMDB_TOKEN>(
+      LibraConfigKeys.TMDB_TOKEN,
+      this.form.controls.tmdbToken.value!,
+    )
   }
 }

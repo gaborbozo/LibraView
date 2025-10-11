@@ -1,4 +1,17 @@
-import { Component, OnInit } from '@angular/core'
+import { Component } from '@angular/core'
+import { CinematicSearchMode } from '../search/search.component'
+import { IFormBuilder, IFormGroup } from '@rxweb/types'
+import {
+  CinematicType,
+  DefaultService as LibraCineRegistryApi,
+  GeneralCinematicDTO,
+} from '../../../../generated/api/cine-registry'
+import { UntypedFormBuilder } from '@angular/forms'
+
+interface SearchLibraryRequestForm {
+  type: CinematicSearchMode
+  title: string
+}
 
 @Component({
   selector: 'app-cinematic-library',
@@ -6,14 +19,35 @@ import { Component, OnInit } from '@angular/core'
   styleUrl: './library.component.scss',
   standalone: false,
 })
-export class CinematicLibraryComponent implements OnInit {
-  // items: Cinematic[] = []
+export class CinematicLibraryComponent {
+  form!: IFormGroup<SearchLibraryRequestForm>
+  items?: GeneralCinematicDTO[]
 
-  constructor() {}
+  protected readonly CinematicType = CinematicType
 
-  ngOnInit(): void {
-    // this.cinematicClient.getCinematic().subscribe((response) => {
-    //   this.items = response.cinematics
-    // })
+  constructor(
+    private libraCineRegistryApi: LibraCineRegistryApi,
+    fb: UntypedFormBuilder,
+  ) {
+    this.form = (fb as IFormBuilder).group<SearchLibraryRequestForm>({
+      type: ['MOVIE', []],
+      title: ['', []],
+    })
+  }
+
+  onSubmit() {
+    if (!this.form.valid) return
+
+    this.libraCineRegistryApi
+      .getCinematicPage(
+        this.form.controls.type.value!,
+        {
+          page: 0,
+          size: 50,
+          filters: [{ value: this.form.controls.title.value!, field: 'title' }],
+        },
+        false,
+      )
+      .subscribe((response) => (this.items = response))
   }
 }

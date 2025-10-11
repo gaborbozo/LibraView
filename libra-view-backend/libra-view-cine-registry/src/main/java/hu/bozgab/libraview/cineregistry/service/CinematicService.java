@@ -17,14 +17,14 @@ import hu.bozgab.libraview.cineregistry.mapper.MovieMapper;
 import hu.bozgab.libraview.cineregistry.mapper.SeriesMapper;
 import hu.bozgab.libraview.cineregistry.repository.CinematicGenreRepository;
 import hu.bozgab.libraview.cineregistry.repository.GenreRepository;
-import hu.bozgab.libraview.cineregistry.repository.MoviePagingRepository;
 import hu.bozgab.libraview.cineregistry.repository.MovieRepository;
 import hu.bozgab.libraview.cineregistry.repository.SeriesRepository;
 import hu.bozgab.libraview.cineregistry.tmdb.TMDBClient;
 import hu.bozgab.libraview.cineregistry.tmdb.resource.TMDBLanguage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.r2dbc.core.R2dbcEntityTemplate;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -35,9 +35,9 @@ import reactor.core.publisher.Mono;
 @Service
 public class CinematicService {
 
+    private final R2dbcEntityTemplate template;
     private final GenreRepository genreRepository;
     private final MovieRepository movieRepository;
-    private final MoviePagingRepository moviePagingRepository;
     private final SeriesRepository seriesRepository;
     private final CinematicGenreRepository cinematicGenreRepository;
 
@@ -47,14 +47,14 @@ public class CinematicService {
     private final TMDBClient tmdbClient;
     private final GenreMapper genreMapper;
 
-    public Flux<GeneralCinematicDTO> getCinematicPage(PageableRequest pageableRequest, CinematicType type, Boolean userLibrary) {
-        var pagedRequest = PageRequest.of(pageableRequest.getPage(), pageableRequest.getSize());
+    public Flux<GeneralCinematicDTO> getCinematicPage(PageableRequest pageableRequest, CinematicType type, Long userId) {
         Map<String, String> filters = pageableRequest.getFilters().stream().collect(Collectors
                 .toMap(FilterDescriptor::getField, FilterDescriptor::getValue));
         return switch(type) {
             case MOVIE ->
-                    moviePagingRepository.findAllByTitleContainingIgnoreCase(pagedRequest, filters.get("title")).map(movieMapper::toGeneralCinematicDto);
-            case SERIES -> Flux.empty();
+                    movieRepository.page(filters.get("title"), userId, pageableRequest.getSize(), pageableRequest.getPage()).map(movieMapper::toGeneralCinematicDto);
+            case SERIES ->
+                    seriesRepository.page(filters.get("title"), userId, pageableRequest.getSize(), pageableRequest.getPage()).map(seriesMapper::toGe);
         };
     }
 
@@ -102,6 +102,11 @@ public class CinematicService {
                         );
                     });
         };
+    }
+
+    @Async
+    public void storeCinematicAsync(Long referenceId, CinematicType type) {
+        storeCinematic(referenceId, type).subscribe();
     }
 
     private Mono<Void> storeGenres(Cinematic cinematicEntity, List<Long> genreIds) {

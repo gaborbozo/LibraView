@@ -26,6 +26,20 @@ components:
           type: string
         value:
           type: string
+    PageableResponse:
+      type: object
+        required:
+          - page
+          - results
+          - totalPages
+          - totalResults
+        properties:
+          page:
+            type:
+        results?: Array<SearchTv200ResponseResultsInner>;
+        total_pages?: number;
+        total_results?: number;
+        TODO
     IdData:
       type: integer
       format: int64
